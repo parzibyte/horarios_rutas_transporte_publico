@@ -36,7 +36,7 @@ export default {
   name: 'HelloWorld',
   components: {Horarios, Rutas},
   data: () => ({
-    tab: null,
+    tab: 1,
   }),
   methods: {
     actualizarRutasEnHorarios() {

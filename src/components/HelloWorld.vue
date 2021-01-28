@@ -4,16 +4,18 @@
     <v-tabs
         background-color="cyan"
         dark
+        fixed-tabs
         v-model="tab"
-        align-with-title
+        icons-and-text
     >
       <v-tabs-slider color="yellow"></v-tabs-slider>
-
       <v-tab>
         Rutas
+        <v-icon>mdi-bus</v-icon>
       </v-tab>
       <v-tab>
         Horarios
+        <v-icon>mdi-clipboard-clock</v-icon>
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">

@@ -68,6 +68,7 @@ export default {
       this.snackbar.mostrar = true;
       this.snackbar.texto = "Ruta guardada";
       this.mostrarDialogoAgregar = false;
+      this.$emit("actualizadas");
       this.obtenerRutas();
     },
     mostrarDialogoAgregarRuta() {
@@ -81,6 +82,7 @@ export default {
       await RutasService.eliminar(this.rutaSeleccionada);
       this.rutaSeleccionada = {};
       this.mostrarDialogoEliminar = false;
+      this.$emit("actualizadas");
       this.obtenerRutas();
     },
     cerrarDialogo() {

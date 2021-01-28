@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import RutasService from "@/RutasService";
+
 export default {
   name: "AgregarRuta",
   props: ["mostrar"],
@@ -65,24 +67,20 @@ export default {
     }
   }),
   methods: {
-    validate() {
-
-    },
-    cerrar() {
+    antesDeCerrar() {
       this.$refs.formulario.resetValidation();
       this.$refs.formulario.reset();
+    },
+    cerrar() {
+      this.antesDeCerrar();
       this.$emit("cerrar");
     },
-    guardar() {
-      console.log("Guardamos:")
-      console.log(this.ruta);
+    async guardar() {
+      await RutasService.nueva(this.ruta.nombre);
       this.ruta.nombre = "";
-      this.cerrar();
+      this.antesDeCerrar();
+      this.$emit("guardada");
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>

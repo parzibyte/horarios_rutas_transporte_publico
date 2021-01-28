@@ -1,15 +1,29 @@
 <template>
   <v-card flat>
-    <ConfirmarEliminacionRuta @confirmado="eliminarRutaSeleccionada()" @cerrar="cerrarDialogo" :ruta="rutaSeleccionada"
+
+    <ConfirmarEliminacionRuta @confirmado="eliminarRutaSeleccionada()" @cerrar="cerrarDialogo"
+                              :ruta="rutaSeleccionada"
                               :mostrar="mostrarDialogoEliminar"></ConfirmarEliminacionRuta>
-    <AgregarRuta :mostrar="mostrarDialogoAgregar" @cerrar="mostrarDialogoAgregar = false"></AgregarRuta>
-    <div v-for="(ruta, i) in rutas" :key="i">
-      <v-list-item @click="confirmarEliminacion(ruta)" two-line>
-        <v-list-item-content>
-          <v-list-item-title>{{ ruta.nombre }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-divider></v-divider>
+    <AgregarRuta @guardada="onRutaGuardada" :mostrar="mostrarDialogoAgregar"
+                 @cerrar="mostrarDialogoAgregar = false"></AgregarRuta>
+    <div v-if="rutas.length > 0">
+      <div v-for="(ruta, i) in rutas" :key="i">
+        <v-list-item @click="confirmarEliminacion(ruta)" two-line>
+          <v-list-item-content>
+            <v-list-item-title>{{ ruta.nombre }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
+      </div>
+    </div>
+    <div v-else>
+      <v-alert
+          class="mx-2 my-2"
+          dense
+          type="info"
+      >
+        Todavía no hay rutas. Agrega una con el botón flotante
+      </v-alert>
     </div>
     <v-btn
         color="primary"
@@ -22,12 +36,16 @@
     >
       <v-icon>mdi-plus</v-icon>
     </v-btn>
+    <v-snackbar top timeout="700" v-model="snackbar.mostrar">
+      {{ snackbar.texto }}
+    </v-snackbar>
   </v-card>
 </template>
 
 <script>
 import ConfirmarEliminacionRuta from "@/components/ConfirmarEliminacionRuta";
 import AgregarRuta from "@/components/AgregarRuta";
+import RutasService from "@/RutasService";
 
 export default {
   name: "Rutas",
@@ -36,12 +54,22 @@ export default {
     rutas: [],
     rutaSeleccionada: {},
     mostrarDialogoEliminar: false,
-    mostrarDialogoAgregar: true,
+    mostrarDialogoAgregar: false,
+    snackbar: {
+      mostrar: false,
+      texto: "",
+    }
   }),
   mounted() {
     this.obtenerRutas();
   },
   methods: {
+    onRutaGuardada() {
+      this.snackbar.mostrar = true;
+      this.snackbar.texto = "Ruta guardada";
+      this.mostrarDialogoAgregar = false;
+      this.obtenerRutas();
+    },
     mostrarDialogoAgregarRuta() {
       this.mostrarDialogoAgregar = true;
     },
@@ -49,26 +77,17 @@ export default {
       this.rutaSeleccionada = ruta;
       this.mostrarDialogoEliminar = true;
     },
-    eliminarRutaSeleccionada() {
-      console.log("Se elimina");
-      console.log(this.rutaSeleccionada);
+    async eliminarRutaSeleccionada() {
+      await RutasService.eliminar(this.rutaSeleccionada);
       this.rutaSeleccionada = {};
       this.mostrarDialogoEliminar = false;
+      this.obtenerRutas();
     },
     cerrarDialogo() {
       this.mostrarDialogoEliminar = false;
     },
-    obtenerRutas() {
-      const a = [
-        {
-          nombre: "Ruta 1",
-        },
-        {
-          nombre: "Ruta 2",
-        },
-      ];
-      for (let i = 0; i < 10; i++)
-        this.rutas.push(...a);
+    async obtenerRutas() {
+      this.rutas = await RutasService.obtener();
     }
   }
 }

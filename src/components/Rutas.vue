@@ -2,6 +2,7 @@
   <v-card flat>
     <ConfirmarEliminacionRuta @confirmado="eliminarRutaSeleccionada()" @cerrar="cerrarDialogo" :ruta="rutaSeleccionada"
                               :mostrar="mostrarDialogoEliminar"></ConfirmarEliminacionRuta>
+    <AgregarRuta :mostrar="mostrarDialogoAgregar" @cerrar="mostrarDialogoAgregar = false"></AgregarRuta>
     <div v-for="(ruta, i) in rutas" :key="i">
       <v-list-item @click="confirmarEliminacion(ruta)" two-line>
         <v-list-item-content>
@@ -17,6 +18,7 @@
         right
         bottom
         fixed
+        @click="mostrarDialogoAgregarRuta()"
     >
       <v-icon>mdi-plus</v-icon>
     </v-btn>
@@ -25,19 +27,24 @@
 
 <script>
 import ConfirmarEliminacionRuta from "@/components/ConfirmarEliminacionRuta";
+import AgregarRuta from "@/components/AgregarRuta";
 
 export default {
   name: "Rutas",
-  components: {ConfirmarEliminacionRuta},
+  components: {AgregarRuta, ConfirmarEliminacionRuta},
   data: () => ({
     rutas: [],
     rutaSeleccionada: {},
     mostrarDialogoEliminar: false,
+    mostrarDialogoAgregar: true,
   }),
   mounted() {
     this.obtenerRutas();
   },
   methods: {
+    mostrarDialogoAgregarRuta() {
+      this.mostrarDialogoAgregar = true;
+    },
     confirmarEliminacion(ruta) {
       this.rutaSeleccionada = ruta;
       this.mostrarDialogoEliminar = true;

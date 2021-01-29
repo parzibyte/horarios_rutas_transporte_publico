@@ -4,10 +4,10 @@ import Utiles from "@/Utiles";
 const PREFIJO = "horarios";
 
 const HorariosService = {
-    async nuevo(idRuta, fecha, hora) {
+    async nuevo(idRuta, fecha, hora, tipoUnidad, numero) {
         return await db.put({
             _id: Utiles.idConSufijo(PREFIJO),
-            idRuta, fecha, hora
+            idRuta, fecha, hora, tipoUnidad, numero
         });
     },
     async obtenerPorFechaEIdRuta(fecha, idRuta) {
@@ -41,7 +41,7 @@ const HorariosService = {
         if (docs.length <= 0) {
             return "";
         }
-        return docs[0].hora;
+        return docs[0];
     },
     async eliminar(documento) {
         return await db.remove(documento);

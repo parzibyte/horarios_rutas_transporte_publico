@@ -11,10 +11,19 @@
           type="info"
       >
         <strong>{{ ruta.nombre }}</strong>
-
       </v-alert>
 
       <div class="mx-2">
+        <v-select
+            :items="tipos"
+            label="Tipo de unidad"
+            v-model="tipoUnidad"
+        ></v-select>
+        <v-text-field
+            v-model="numeroUnidad"
+            label="Número"
+            type="number"
+        ></v-text-field>
         <v-switch
             v-model="tomarHoraActual"
             label="Tomar hora actual"
@@ -62,6 +71,7 @@
 <script>
 import Utiles from "@/Utiles";
 import HorariosService from "@/HorariosService";
+import Constantes from "@/Constantes";
 
 export default {
   props: ["mostrar", "ruta"],
@@ -71,8 +81,13 @@ export default {
     horaRefrescada: "",
     idInterval: null,
     tomarHoraActual: true,
+    tipos: [],
+    tipoUnidad: "",
+    numeroUnidad: "",
   }),
   mounted() {
+    this.tipos = Constantes.TIPOS_UNIDAD;
+    this.tipoUnidad = this.tipos[0];
     this.idInterval = setInterval(() => {
       this.refrescarHora();
     }, 500);
@@ -97,7 +112,7 @@ export default {
       } else {
         verdaderoHorario = this.horario;
       }
-      await HorariosService.nuevo(this.ruta._id, Utiles.formatearFechaActual(), verdaderoHorario);
+      await HorariosService.nuevo(this.ruta._id, Utiles.formatearFechaActual(), verdaderoHorario, this.tipoUnidad, this.numeroUnidad);
       this.$emit("guardado");
     }
   }

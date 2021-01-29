@@ -11,9 +11,10 @@
               <div v-if="ruta.horario">
                 <h5 class="text-h6">
                   <v-icon>mdi-clock-outline</v-icon>
-                  {{ ruta.horario }} |
+                  {{ ruta.horario.hora }} |
                   Hace {{ ruta.transcurrido | milisegundosALegible }}
                 </h5>
+                <TipoTransporte :horario="ruta.horario"></TipoTransporte>
               </div>
               <div v-else><p>
                 Sin información de horario. Toca para agregar
@@ -45,10 +46,11 @@ import RutasService from "@/RutasService";
 import DialogoAgregarHorario from "@/components/DialogoAgregarHorario";
 import HorariosService from "@/HorariosService";
 import Utiles from "@/Utiles";
+import TipoTransporte from "@/components/TipoTransporte";
 
 export default {
   name: "Horarios",
-  components: {DialogoAgregarHorario},
+  components: {TipoTransporte, DialogoAgregarHorario},
   data: () => ({
     snackbar: {
       texto: "",
@@ -75,11 +77,11 @@ export default {
       const fechaActualComoCadena = Utiles.formatearFechaActual();
       const fechaActual = new Date();
       for (const ruta of this.rutas) {
-        if (!ruta.horario) {
+        if (!ruta.horario.hora) {
           ruta.transcurrido = "";
           continue;
         }
-        const fechaUltimoHorario = new Date(fechaActualComoCadena + " " + ruta.horario);
+        const fechaUltimoHorario = new Date(fechaActualComoCadena + " " + ruta.horario.hora);
         ruta.transcurrido = fechaActual - fechaUltimoHorario;
       }
     },

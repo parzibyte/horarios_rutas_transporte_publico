@@ -52,7 +52,12 @@
       <div v-for="(horario, i) in horarios" :key="i">
         <v-list-item two-line>
           <v-list-item-content>
-            <v-list-item-title>{{ horario.hora }}</v-list-item-title>
+            <v-list-item-title>
+              <h6 class="text-h6">
+                {{ horario.hora }}
+              </h6>
+            </v-list-item-title>
+            <TipoTransporte :horario="horario"></TipoTransporte>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
@@ -70,9 +75,11 @@
 import RutasService from "@/RutasService";
 import Utiles from "@/Utiles";
 import HorariosService from "@/HorariosService";
+import TipoTransporte from "@/components/TipoTransporte";
 
 export default {
   name: "Reportes",
+  components: {TipoTransporte},
   data: () => ({
     fechaSeleccionada: "",
     rutas: [],

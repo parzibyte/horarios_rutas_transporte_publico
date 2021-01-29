@@ -18,7 +18,7 @@
       </v-tab>
       <v-tab>
         Reportes
-        <v-icon>mdi-clipboard-clock</v-icon>
+        <v-icon>mdi-file-table-box-multiple</v-icon>
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
@@ -29,7 +29,7 @@
         <Horarios ref="horarios"></Horarios>
       </v-tab-item>
       <v-tab-item>
-        Aquí mostrar seleccionador de ruta con fecha y mostrar horarios de ese día con un promedio
+        <Reportes></Reportes>
       </v-tab-item>
     </v-tabs-items>
   </div>
@@ -38,10 +38,11 @@
 <script>
 import Rutas from "@/components/Rutas";
 import Horarios from "@/components/Horarios";
+import Reportes from "@/components/Reportes";
 
 export default {
   name: 'HelloWorld',
-  components: {Horarios, Rutas},
+  components: {Reportes, Horarios, Rutas},
   data: () => ({
     tab: 1,
   }),

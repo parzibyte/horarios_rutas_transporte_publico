@@ -20,6 +20,7 @@
       </template>
       <v-date-picker
           @change="obtenerHorariosConFechaYRutaSeleccionada()"
+          locale="es-la"
           v-model="fechaSeleccionada"
           scrollable
       >
@@ -29,7 +30,7 @@
             color="primary"
             @click="modal = false"
         >
-          Cancel
+          Cancelar
         </v-btn>
         <v-btn
             text
@@ -47,6 +48,7 @@
         item-value="_id"
         label="Ruta"
         v-model="rutaSeleccionada"
+        no-data-text="No has registrado ninguna ruta"
     ></v-select>
     <div v-if="horarios.length > 0">
       <div v-for="(horario, i) in horarios" :key="i">

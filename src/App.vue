@@ -1,19 +1,19 @@
 <template>
   <v-app>
     <v-main>
-      <HelloWorld/>
+      <Principal/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import Principal from './components/Principal';
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    Principal,
   },
 
   data: () => ({

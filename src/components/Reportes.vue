@@ -157,15 +157,15 @@ export default {
         let sumatoriaGeneral = 0;
         let contadorRojo = 0;
         let contadorCombi = 0;
-        if (horarios[0].tipoUnidad === Constantes.TIPO_ROJO) {
-          ultimaHoraRojo = horarios[0].hora;
+        if (horarios[horarios.length - 1].tipoUnidad === Constantes.TIPO_ROJO) {
+          ultimaHoraRojo = horarios[horarios.length - 1].hora;
         } else {
-          ultimaHoraCombi = horarios[0].hora;
+          ultimaHoraCombi = horarios[horarios.length - 1].hora;
         }
 
-        for (let i = 1; i < horarios.length; i++) {
+        for (let i = horarios.length - 2; i >= 0; i--) {
           const tiempoA = horarios[i].hora;
-          const tiempoB = horarios[i - 1].hora;
+          const tiempoB = horarios[i + 1].hora;
           let diferenciaGeneral = Utiles.restarHorarios(tiempoA, tiempoB);
           sumatoriaGeneral += diferenciaGeneral;
           horarios[i].tiempoGeneral = diferenciaGeneral;
@@ -196,7 +196,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

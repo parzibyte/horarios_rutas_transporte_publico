@@ -33,7 +33,11 @@ const HorariosService = {
                     $lte: Constantes.PREFIJO_HORARIOS + "\ufff0",
                 },
                 fecha, idRuta,
+                hora: {
+                    $gte: null
+                },
             },
+            sort: [{"hora": "desc"}],
         });
         return rutas.docs;
     },

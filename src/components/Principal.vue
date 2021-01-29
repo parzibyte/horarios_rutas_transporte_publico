@@ -26,10 +26,10 @@
         <Rutas @actualizadas="actualizarRutasEnHorarios"></Rutas>
       </v-tab-item>
       <v-tab-item>
-        <Horarios ref="horarios"></Horarios>
+        <Horarios @actualizados="actualizarReporte()" ref="horarios"></Horarios>
       </v-tab-item>
       <v-tab-item>
-        <Reportes></Reportes>
+        <Reportes ref="reportes"></Reportes>
       </v-tab-item>
     </v-tabs-items>
   </div>
@@ -47,8 +47,12 @@ export default {
     tab: 1,
   }),
   methods: {
+    actualizarReporte() {
+      this.$refs.reportes.refrescarTodo();
+    },
     actualizarRutasEnHorarios() {
       this.$refs.horarios.obtenerRutas();
+      this.$refs.reportes.refrescarTodo();
     }
   }
 }

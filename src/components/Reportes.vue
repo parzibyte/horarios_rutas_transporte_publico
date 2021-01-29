@@ -88,14 +88,17 @@ export default {
     horarios: [],
   }),
   async mounted() {
-    this.fechaSeleccionada = Utiles.formatearFechaActual();
-    await this.obtenerRutas();
-    if (this.rutas.length > 0) {
-      this.rutaSeleccionada = this.rutas[0]._id;
-    }
-    await this.obtenerHorariosConFechaYRutaSeleccionada();
+    await this.refrescarTodo();
   },
   methods: {
+    async refrescarTodo() {
+      this.fechaSeleccionada = Utiles.formatearFechaActual();
+      await this.obtenerRutas();
+      if (this.rutas.length > 0) {
+        this.rutaSeleccionada = this.rutas[0]._id;
+      }
+      await this.obtenerHorariosConFechaYRutaSeleccionada();
+    },
     async obtenerRutas() {
       this.rutas = await RutasService.obtener();
     },

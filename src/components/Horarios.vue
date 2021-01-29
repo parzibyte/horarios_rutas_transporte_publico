@@ -92,6 +92,7 @@ export default {
       };
       await this.obtenerRutas();
       this.dialogoRegistrarHorario = false;
+      this.$emit("actualizados");
     },
     registrarHorario(ruta) {
       this.rutaSeleccionada = ruta;

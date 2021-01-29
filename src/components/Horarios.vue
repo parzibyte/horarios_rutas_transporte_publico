@@ -1,11 +1,109 @@
 <template>
   <v-card flat>
-    <v-card-text>Horarios ahora sí</v-card-text>
+    <DialogoAgregarHorario @guardado="onHorarioGuardado" :ruta="rutaSeleccionada" :mostrar="dialogoRegistrarHorario"
+                           @cerrar="dialogoRegistrarHorario=false"></DialogoAgregarHorario>
+    <div v-if="rutas.length > 0">
+      <div v-for="(ruta, i) in rutas" :key="i">
+        <v-list-item @click="registrarHorario(ruta)" three-line>
+          <v-list-item-content>
+            <v-list-item-title>
+              <h5 class="text-h4">{{ ruta.nombre }}</h5>
+              <div v-if="ruta.horario">
+                <h5 class="text-h6">
+                  <v-icon>mdi-clock-outline</v-icon>
+                  {{ ruta.horario }} |
+                  Hace {{ ruta.transcurrido | milisegundosALegible }}
+                </h5>
+              </div>
+              <div v-else><p>
+                Sin información de horario. Toca para agregar
+              </p></div>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
+      </div>
+    </div>
+    <div v-else>
+      <v-alert
+          class="mx-2 my-2"
+          dense
+          type="info"
+      >
+        Todavía no hay rutas. Ve a <strong>Rutas</strong> y agrega algunas
+      </v-alert>
+    </div>
+    <v-snackbar top timeout="700" v-model="snackbar.mostrar">
+      {{ snackbar.texto }}
+    </v-snackbar>
   </v-card>
+
 </template>
 
 <script>
+import RutasService from "@/RutasService";
+import DialogoAgregarHorario from "@/components/DialogoAgregarHorario";
+import HorariosService from "@/HorariosService";
+import Utiles from "@/Utiles";
+
 export default {
-  name: "Horarios"
+  name: "Horarios",
+  components: {DialogoAgregarHorario},
+  data: () => ({
+    snackbar: {
+      texto: "",
+      mostrar: false,
+    },
+    dialogoRegistrarHorario: false,
+    rutas: [],
+    rutaSeleccionada: {},
+    idInterval: null,
+  }),
+  async mounted() {
+    await this.obtenerRutas();
+    this.iniciarIntervalRefrescarTiempo();
+  },
+  methods: {
+    iniciarIntervalRefrescarTiempo() {
+      clearInterval(this.idInterval);
+      this.refrescarTiempoTranscurrido();
+      this.idInterval = setInterval(() => {
+        this.refrescarTiempoTranscurrido();
+      }, 2000);
+    },
+    refrescarTiempoTranscurrido() {
+      const fechaActualComoCadena = Utiles.formatearFechaActual();
+      const fechaActual = new Date();
+      for (const ruta of this.rutas) {
+        if (!ruta.horario) {
+          ruta.transcurrido = "";
+          continue;
+        }
+        const fechaUltimoHorario = new Date(fechaActualComoCadena + " " + ruta.horario);
+        ruta.transcurrido = fechaActual - fechaUltimoHorario;
+      }
+    },
+    async onHorarioGuardado() {
+      this.snackbar = {
+        texto: "Horario guardado",
+        mostrar: true,
+      };
+      await this.obtenerRutas();
+      this.dialogoRegistrarHorario = false;
+    },
+    registrarHorario(ruta) {
+      this.rutaSeleccionada = ruta;
+      this.dialogoRegistrarHorario = true;
+    },
+    async obtenerRutas() {
+      const fechaActual = Utiles.formatearFechaActual();
+      const rutas = await RutasService.obtener();
+      for (const ruta of rutas) {
+        ruta.horario = await HorariosService.obtenerUltimoHorarioRegistrado(fechaActual, ruta._id);
+        ruta.transcurrido = 0;
+      }
+      this.rutas = rutas;
+    }
+  }
 }
 </script>

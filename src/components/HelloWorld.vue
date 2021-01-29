@@ -16,6 +16,10 @@
         Horarios
         <v-icon>mdi-clipboard-clock</v-icon>
       </v-tab>
+      <v-tab>
+        Reportes
+        <v-icon>mdi-clipboard-clock</v-icon>
+      </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item>
@@ -23,6 +27,9 @@
       </v-tab-item>
       <v-tab-item>
         <Horarios ref="horarios"></Horarios>
+      </v-tab-item>
+      <v-tab-item>
+        Aquí mostrar seleccionador de ruta con fecha y mostrar horarios de ese día con un promedio
       </v-tab-item>
     </v-tabs-items>
   </div>

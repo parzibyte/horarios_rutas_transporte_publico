@@ -2,6 +2,7 @@
   <v-dialog
       v-model="mostrar"
       persistent
+      max-width="350"
   >
     <v-card>
       <v-card-title class="headline">Registrar pase</v-card-title>
@@ -13,30 +14,40 @@
         <strong>{{ ruta.nombre }}</strong>
       </v-alert>
 
-      <div class="mx-2">
-        <v-select
-            :items="tipos"
-            label="Tipo de unidad"
-            v-model="tipoUnidad"
-        ></v-select>
-        <v-text-field
-            v-model="numeroUnidad"
-            label="Número"
-            type="number"
-        ></v-text-field>
-        <div v-show="!tomarHoraActual">
-          <v-time-picker
-              full-width
-              format="ampm"
-              v-model="horario"
-              use-seconds
-          ></v-time-picker>
-          <div v-show="!horario">
-            <p>Por favor selecciona el horario</p>
-          </div>
-          <div v-show="horario">
-            Se registrará con la hora: <strong>{{ horario }}</strong>
-          </div>
+      <v-container>
+
+        <v-row >
+          <v-col>
+
+            <v-select
+                :items="tipos"
+                label="Tipo de unidad"
+                v-model="tipoUnidad"
+            ></v-select>
+          </v-col>
+          <v-col>
+
+            <v-text-field
+
+                v-model="numeroUnidad"
+                label="Número"
+                type="number"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </v-container>
+      <div v-show="!tomarHoraActual">
+        <v-time-picker
+            full-width
+            format="ampm"
+            v-model="horario"
+            use-seconds
+        ></v-time-picker>
+        <div v-show="!horario">
+          <p>Por favor selecciona el horario</p>
+        </div>
+        <div v-show="horario">
+          Se registrará con la hora: <strong>{{ horario }}</strong>
         </div>
       </div>
 

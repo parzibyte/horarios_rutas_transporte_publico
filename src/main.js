@@ -4,6 +4,9 @@ import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false
 Vue.filter("milisegundosALegible", milisegundos => {
+    if (!milisegundos) {
+        return "-";
+    }
     const transcurrido = new Date(milisegundos).toISOString().substr(11, 8);
     const horas = parseInt(transcurrido.substring(0, 2));
     const minutos = parseInt(transcurrido.substring(3, 5));
@@ -15,7 +18,7 @@ Vue.filter("milisegundosALegible", milisegundos => {
     if (minutos) {
         respuesta = respuesta.concat(`${minutos} min${minutos > 1 ? 's' : ''} `);
     }
-    if(segundos){
+    if (segundos) {
         respuesta = respuesta.concat(`${segundos} seg${segundos > 1 ? 's' : ''} `);
     }
     return respuesta;

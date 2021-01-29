@@ -51,6 +51,20 @@
         no-data-text="No has registrado ninguna ruta"
     ></v-select>
     <div v-if="horarios.length > 0">
+      <v-row justify="center">
+        <h6 class="text-h5">Promedios</h6>
+      </v-row>
+      <v-row justify="center">
+        <v-chip class="mr-1" color="success">General</v-chip>
+        <v-chip class="mr-1" color="info">Combi</v-chip>
+        <v-chip color="red" dark>Rojo</v-chip>
+      </v-row>
+      <v-row class="mt-4" justify="center">
+        <v-chip class="mr-1 my-1" color="success">{{ promedios.general | milisegundosALegible }}</v-chip>
+        <v-chip class="mr-1 my-1" color="info">{{ promedios.combi | milisegundosALegible }}</v-chip>
+        <v-chip class="mr-1 my-1" color="red" dark>{{ promedios.rojo | milisegundosALegible }}</v-chip>
+      </v-row>
+      <v-divider class="mt-4"></v-divider>
       <div v-for="(horario, i) in horarios" :key="i">
         <v-list-item two-line>
           <v-list-item-content>
@@ -60,6 +74,25 @@
               </h6>
             </v-list-item-title>
             <TipoTransporte :horario="horario"></TipoTransporte>
+            <v-row justify="center">
+              <v-col>
+                <p v-show="horario.tiempoMismoTipo">
+                  <strong>{{ horario.tipoUnidad }} anterior:
+                    <br>
+                  </strong> {{
+                    horario.tiempoMismoTipo | milisegundosALegible
+                  }}
+                </p>
+              </v-col>
+              <v-col>
+                <p v-show="horario.tiempoGeneral">
+                  <strong>Transporte anterior: </strong>
+                  <br>
+                  {{ horario.tiempoGeneral | milisegundosALegible }}
+                </p>
+              </v-col>
+
+            </v-row>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
@@ -78,6 +111,7 @@ import RutasService from "@/RutasService";
 import Utiles from "@/Utiles";
 import HorariosService from "@/HorariosService";
 import TipoTransporte from "@/components/TipoTransporte";
+import Constantes from "@/Constantes";
 
 export default {
   name: "Reportes",
@@ -88,6 +122,12 @@ export default {
     modal: false,
     rutaSeleccionada: "",
     horarios: [],
+    promedios: {
+      rojo: "",
+      combi: "",
+      general: "",
+    },
+    TIPO_COMBI: Constantes.TIPO_COMBI,
   }),
   async mounted() {
     await this.refrescarTodo();
@@ -108,7 +148,50 @@ export default {
       if (!this.fechaSeleccionada || !this.rutaSeleccionada) {
         return;
       }
-      this.horarios = await HorariosService.obtenerPorFechaEIdRuta(this.fechaSeleccionada, this.rutaSeleccionada);
+      const horarios = await HorariosService.obtenerPorFechaEIdRuta(this.fechaSeleccionada, this.rutaSeleccionada);
+      if (horarios.length > 0) {
+        let ultimaHoraRojo = "";
+        let ultimaHoraCombi = "";
+        let sumatoriaRojo = 0;
+        let sumatoriaCombi = 0;
+        let sumatoriaGeneral = 0;
+        let contadorRojo = 0;
+        let contadorCombi = 0;
+        if (horarios[0].tipoUnidad === Constantes.TIPO_ROJO) {
+          ultimaHoraRojo = horarios[0].hora;
+        } else {
+          ultimaHoraCombi = horarios[0].hora;
+        }
+
+        for (let i = 1; i < horarios.length; i++) {
+          const tiempoA = horarios[i].hora;
+          const tiempoB = horarios[i - 1].hora;
+          let diferenciaGeneral = Utiles.restarHorarios(tiempoA, tiempoB);
+          sumatoriaGeneral += diferenciaGeneral;
+          horarios[i].tiempoGeneral = diferenciaGeneral;
+          if (horarios[i].tipoUnidad === Constantes.TIPO_ROJO) {
+            if (ultimaHoraRojo) {
+              let diferencia = Utiles.restarHorarios(tiempoA, ultimaHoraRojo);
+              sumatoriaRojo += diferencia;
+              contadorRojo++;
+              horarios[i].tiempoMismoTipo = diferencia;
+            }
+            ultimaHoraRojo = tiempoA;
+          } else {
+            if (ultimaHoraCombi) {
+              let diferencia = Utiles.restarHorarios(tiempoA, ultimaHoraCombi);
+              sumatoriaCombi += diferencia;
+              contadorCombi++;
+              horarios[i].tiempoMismoTipo = diferencia;
+            }
+            ultimaHoraCombi = tiempoA;
+          }
+        }
+        this.promedios.general = sumatoriaGeneral / horarios.length - 1;
+        this.promedios.rojo = sumatoriaRojo / contadorRojo;
+        this.promedios.combi = sumatoriaCombi / contadorCombi;
+      }
+      this.horarios = horarios;
     }
   }
 }

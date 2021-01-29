@@ -24,13 +24,6 @@
             label="Número"
             type="number"
         ></v-text-field>
-        <v-switch
-            v-model="tomarHoraActual"
-            label="Tomar hora actual"
-        ></v-switch>
-        <div v-show="tomarHoraActual">
-          Al presionar el botón, se registrará con la hora: <strong>{{ horaRefrescada }}</strong>
-        </div>
         <div v-show="!tomarHoraActual">
           <v-time-picker
               full-width

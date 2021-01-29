@@ -37,6 +37,18 @@
     <v-snackbar top timeout="700" v-model="snackbar.mostrar">
       {{ snackbar.texto }}
     </v-snackbar>
+    <v-btn
+        color="primary"
+        fab
+        elevation="2"
+        right
+        bottom
+        fixed
+        @click="clickBoton()"
+    >
+      <v-icon v-show="pausado">mdi-play</v-icon>
+      <v-icon v-show="!pausado">mdi-pause</v-icon>
+    </v-btn>
   </v-card>
 
 </template>
@@ -60,12 +72,22 @@ export default {
     rutas: [],
     rutaSeleccionada: {},
     idInterval: null,
+    pausado: false,
   }),
   async mounted() {
     await this.obtenerRutas();
     this.iniciarIntervalRefrescarTiempo();
   },
   methods: {
+    clickBoton() {
+      if (this.pausado) {
+        this.iniciarIntervalRefrescarTiempo();
+        this.pausado = false;
+      } else {
+        clearInterval(this.idInterval);
+        this.pausado = true;
+      }
+    },
     iniciarIntervalRefrescarTiempo() {
       clearInterval(this.idInterval);
       this.refrescarTiempoTranscurrido();

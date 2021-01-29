@@ -96,10 +96,15 @@ export default {
     console.log("Destroy!");
   },
   methods: {
+    antesDeCerrar() {
+      this.tipoUnidad = this.tipos[0];
+      this.numeroUnidad = "";
+    },
     refrescarHora() {
       this.horaRefrescada = Utiles.formatearHoraActual();
     },
     cerrar() {
+      this.antesDeCerrar();
       this.$emit("cerrar");
     },
     async guardar() {
@@ -113,6 +118,7 @@ export default {
         verdaderoHorario = this.horario;
       }
       await HorariosService.nuevo(this.ruta._id, Utiles.formatearFechaActual(), verdaderoHorario, this.tipoUnidad, this.numeroUnidad);
+      this.antesDeCerrar();
       this.$emit("guardado");
     }
   }

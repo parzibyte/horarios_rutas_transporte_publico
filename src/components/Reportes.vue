@@ -187,7 +187,7 @@ export default {
             ultimaHoraCombi = tiempoA;
           }
         }
-        this.promedios.general = sumatoriaGeneral / horarios.length - 1;
+        this.promedios.general = sumatoriaGeneral / (horarios.length - 1);
         this.promedios.rojo = sumatoriaRojo / contadorRojo;
         this.promedios.combi = sumatoriaCombi / contadorCombi;
       }

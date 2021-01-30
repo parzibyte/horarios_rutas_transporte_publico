@@ -1,24 +1,18 @@
-# horarios
 
-# Convirtiendo en PWA
-Ejecutar `npm run build` para compilar la app.
+# Aplicación para checador de transporte público
+Registrar cada cuánto tiempo pasa determinado transporte hacia una ruta, genera reportes de horarios con promedios. Todo eso en una app web creada con Vuetify, misma que puede ser convertida a PWA e instalada como app nativa.
+![Reporte de horarios de transporte público y promedios con app checador de transporte público](https://parzibyte.me/blog/wp-content/uploads/2021/01/Reporte-de-horarios-de-transporte-publico-y-promedios-con-app-checador-de-transporte-publico.png)
 
+Reporte de horarios de transporte público y promedios con app checador de transporte público
 
-Luego instalar sw-precache con `npm install --global sw-precache`. Para generar el archivo
-**service-worker.js** entramos a **dist** con `cd dist` y ejecutamos: `sw-precache`.
+# Documentación e instalación
 
-Ahora todo lo que necesitamos es publicar toda la carpeta de **dist**, puedes subirla a un servidor
-local para probar, en ese caso abrimos la consola de depuración, pestaña **Application** > **Manifest** y todo
-debe estar bien.
+Lo encuentras en el tutorial: 
+https://parzibyte.me/blog/2021/01/30/checador-transporte-publico-aplicacion-gratuita/
 
-Ahora subimos eso a un sitio https, puede ser GitHub pages, visitamos página con dispositivo
-móvil, **Menú** > **Instalar aplicación**.
+Demostración: https://parzibyte.github.io/horarios_rutas_transporte_publico/
 
-
-Si quieres hostearla en este mismo repositorio, renombra **dist** a **docs** y configura en github.
-Branch master, ruta **/docs**
-
-Listo
+Sordid details following...
 
 ## Project setup
 ```
@@ -43,5 +37,5 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-# iconos
+# Agradecimientos
 <div>Iconos diseñados por <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.es/" title="Flaticon">www.flaticon.es</a></div>

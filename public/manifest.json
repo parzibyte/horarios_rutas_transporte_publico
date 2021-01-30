@@ -1,0 +1,22 @@
+{
+  "name": "Checador del transporte",
+  "short_name": "Checador",
+  "theme_color": "#2196f3",
+  "background_color": "#2196f3",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "scope": "./",
+  "start_url": "./",
+  "icons": [
+    {
+      "src": "./images/icons-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./images/icons-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

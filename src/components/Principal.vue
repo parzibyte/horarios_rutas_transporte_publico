@@ -20,6 +20,10 @@
         Reportes
         <v-icon>mdi-file-table-box-multiple</v-icon>
       </v-tab>
+      <v-tab>
+        Acerca de
+        <v-icon>mdi-information-outline</v-icon>
+      </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item>
@@ -31,6 +35,9 @@
       <v-tab-item>
         <Reportes ref="reportes"></Reportes>
       </v-tab-item>
+      <v-tab-item>
+        <AcercaDe></AcercaDe>
+      </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
@@ -39,10 +46,11 @@
 import Rutas from "@/components/Rutas";
 import Horarios from "@/components/Horarios";
 import Reportes from "@/components/Reportes";
+import AcercaDe from "@/components/AcercaDe";
 
 export default {
   name: 'HelloWorld',
-  components: {Reportes, Horarios, Rutas},
+  components: {AcercaDe, Reportes, Horarios, Rutas},
   data: () => ({
     tab: 1,
   }),

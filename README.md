@@ -14,6 +14,10 @@ debe estar bien.
 Ahora subimos eso a un sitio https, puede ser GitHub pages, visitamos página con dispositivo
 móvil, **Menú** > **Instalar aplicación**.
 
+
+Si quieres hostearla en este mismo repositorio, renombra **dist** a **docs** y configura en github.
+Branch master, ruta **/docs**
+
 Listo
 
 ## Project setup

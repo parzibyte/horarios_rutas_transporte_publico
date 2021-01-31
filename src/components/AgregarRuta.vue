@@ -20,6 +20,9 @@
             label="Nombre"
             required
         ></v-text-field>
+        <v-text-field :style="{backgroundColor:ruta.color}" v-model="ruta.color" label="Color" type="color">
+
+        </v-text-field>
       </v-form>
 
       <v-card-actions>
@@ -52,7 +55,8 @@ export default {
   props: ["mostrar"],
   data: () => ({
     ruta: {
-      nombre: ""
+      nombre: "",
+      color: "ffffff",
     },
     formularioValido: false,
     reglasValidacion: {
@@ -76,8 +80,9 @@ export default {
       this.$emit("cerrar");
     },
     async guardar() {
-      await RutasService.nueva(this.ruta.nombre);
+      await RutasService.nueva(this.ruta.nombre, this.ruta.color);
       this.ruta.nombre = "";
+      this.ruta.color = "ffffff";
       this.antesDeCerrar();
       this.$emit("guardada");
     }

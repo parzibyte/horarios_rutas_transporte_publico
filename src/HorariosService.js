@@ -25,6 +25,22 @@ const HorariosService = {
             idRuta, fecha, hora, tipoUnidad, numero
         });
     },
+
+    async obtenerNumerosPorFechaRutaYTipoUnidad(fecha, idRuta, tipoUnidad) {
+        const rutas = await db.find({
+            selector: {
+                _id: {
+                    $gte: Constantes.PREFIJO_HORARIOS,
+                    $lte: Constantes.PREFIJO_HORARIOS + "\ufff0",
+                },
+                fecha, idRuta,tipoUnidad,
+                hora: {
+                    $gte: null
+                },
+            },
+        });
+        return rutas.docs;
+    },
     async obtenerPorFechaEIdRuta(fecha, idRuta) {
         const rutas = await db.find({
             selector: {
@@ -54,13 +70,13 @@ const HorariosService = {
                 }
             },
             sort: [{"hora": "desc"}],
-            limit: 1,
+            limit: 2,
         });
         const docs = rutas.docs;
         if (docs.length <= 0) {
             return "";
         }
-        return docs[0];
+        return docs.splice(0, 2);
     },
     async eliminar(documento) {
         return await db.remove(documento);

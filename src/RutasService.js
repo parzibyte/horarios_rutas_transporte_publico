@@ -5,10 +5,10 @@ import HorariosService from "@/HorariosService";
 
 
 const RutasService = {
-    async nueva(nombre) {
+    async nueva(nombre, color) {
         return await db.put({
             _id: Utiles.idConSufijo(Constantes.PREFIJO_RUTAS),
-            nombre
+            nombre, color
         });
     },
     async obtener() {

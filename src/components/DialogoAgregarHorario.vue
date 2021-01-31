@@ -4,37 +4,20 @@
       persistent
       max-width="350"
   >
-    <v-card>
-      <v-card-title class="headline">Registrar pase</v-card-title>
+    <v-card class="pt-2">
       <v-alert
           class="mx-2 my-2"
           dense
           type="info"
       >
-        <strong>{{ ruta.nombre }}</strong>
+        <strong class="text-h4">{{ ruta.nombre }}</strong>
       </v-alert>
-
       <v-container>
-
-        <v-row >
-          <v-col>
-
-            <v-select
-                :items="tipos"
-                label="Tipo de unidad"
-                v-model="tipoUnidad"
-            ></v-select>
-          </v-col>
-          <v-col>
-
-            <v-text-field
-
-                v-model="numeroUnidad"
-                label="Número"
-                type="number"
-            ></v-text-field>
-          </v-col>
-        </v-row>
+        <v-text-field
+            v-model="numeroUnidad"
+            label="Número"
+            type="number"
+        ></v-text-field>
       </v-container>
       <div v-show="!tomarHoraActual">
         <v-time-picker
@@ -54,18 +37,25 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-            text
             @click="cerrar"
+            text
         >
           Cancelar
         </v-btn>
 
         <v-btn
-            color="green darken-1"
-            text
-            @click="guardar"
+            color="blue "
+            dark
+            @click="guardarCombi()"
         >
-          Guardar
+          R-3
+        </v-btn>
+        <v-btn
+            dark
+            color="red"
+            @click="guardarMicro()"
+        >
+          Rojo
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -100,6 +90,14 @@ export default {
     console.log("Destroy!");
   },
   methods: {
+    guardarCombi() {
+      this.tipoUnidad = Constantes.TIPO_COMBI;
+      this.guardar();
+    },
+    guardarMicro() {
+      this.tipoUnidad = Constantes.TIPO_ROJO;
+      this.guardar();
+    },
     antesDeCerrar() {
       this.tipoUnidad = this.tipos[0];
       this.numeroUnidad = "";

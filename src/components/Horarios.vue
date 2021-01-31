@@ -4,17 +4,23 @@
                            @cerrar="dialogoRegistrarHorario=false"></DialogoAgregarHorario>
     <div v-if="rutas.length > 0">
       <div v-for="(ruta, i) in rutas" :key="i">
-        <v-list-item @click="registrarHorario(ruta)" three-line>
+        <v-list-item :style="{backgroundColor: ruta.color}" @click="registrarHorario(ruta)" three-line>
           <v-list-item-content>
             <v-list-item-title>
-              <h5 class="text-h4">{{ ruta.nombre }}</h5>
-              <div v-if="ruta.horario">
+              <h5 class="text-h4" style="">{{ ruta.nombre }}</h5>
+              <div v-if="ruta.horarios">
+                <v-row v-for="(horarioReal, clave) in ruta.horarios" :key="clave">
+                  <v-col>
+                    <TipoTransporte :horario="horarioReal"></TipoTransporte>
+                  </v-col>
+                  <v-col>
+                    <v-icon>mdi-clock-outline</v-icon>
+                    {{ horarioReal.hora }} |
+                    <strong>{{ horarioReal.transcurrido | milisegundosCortos }}</strong>
+                  </v-col>
+                </v-row>
                 <h5 class="text-h6">
-                  <v-icon>mdi-clock-outline</v-icon>
-                  {{ ruta.horario.hora }} |
-                  Hace {{ ruta.transcurrido | milisegundosALegible }}
                 </h5>
-                <TipoTransporte :horario="ruta.horario"></TipoTransporte>
               </div>
               <div v-else><p>
                 Sin información de horario. Toca para agregar
@@ -37,18 +43,6 @@
     <v-snackbar top timeout="700" v-model="snackbar.mostrar">
       {{ snackbar.texto }}
     </v-snackbar>
-    <v-btn
-        color="primary"
-        fab
-        elevation="2"
-        right
-        bottom
-        fixed
-        @click="clickBoton()"
-    >
-      <v-icon v-show="pausado">mdi-play</v-icon>
-      <v-icon v-show="!pausado">mdi-pause</v-icon>
-    </v-btn>
   </v-card>
 
 </template>
@@ -93,18 +87,25 @@ export default {
       this.refrescarTiempoTranscurrido();
       this.idInterval = setInterval(() => {
         this.refrescarTiempoTranscurrido();
-      }, 2000);
+      }, 5000);
     },
     refrescarTiempoTranscurrido() {
       const fechaActualComoCadena = Utiles.formatearFechaActual();
       const fechaActual = new Date();
       for (const ruta of this.rutas) {
-        if (!ruta.horario.hora) {
-          ruta.transcurrido = "";
-          continue;
+        let indice = 0;
+        for (const horario of ruta.horarios) {
+          if (!horario.hora) {
+            ruta.transcurrido = "";
+            continue;
+          }
+          const fechaUltimoHorario = new Date(fechaActualComoCadena + " " + horario.hora);
+          horario.transcurrido = fechaActual - fechaUltimoHorario;
+          if (indice === 1) {
+            horario.transcurrido = new Date(fechaActualComoCadena + " " + ruta.horarios[0].hora) - fechaUltimoHorario;
+          }
+          indice++;
         }
-        const fechaUltimoHorario = new Date(fechaActualComoCadena + " " + ruta.horario.hora);
-        ruta.transcurrido = fechaActual - fechaUltimoHorario;
       }
     },
     async onHorarioGuardado() {
@@ -112,9 +113,9 @@ export default {
         texto: "Horario guardado",
         mostrar: true,
       };
-      await this.obtenerRutas();
       this.dialogoRegistrarHorario = false;
       this.$emit("actualizados");
+      await this.obtenerRutas();
     },
     registrarHorario(ruta) {
       this.rutaSeleccionada = ruta;
@@ -124,7 +125,11 @@ export default {
       const fechaActual = Utiles.formatearFechaActual();
       const rutas = await RutasService.obtener();
       for (const ruta of rutas) {
-        ruta.horario = await HorariosService.obtenerUltimoHorarioRegistrado(fechaActual, ruta._id);
+        const horarios = await HorariosService.obtenerUltimoHorarioRegistrado(fechaActual, ruta._id);
+        for (const horario of horarios) {
+          horario.transcurrido = 0;
+        }
+        ruta.horarios = horarios;
         ruta.transcurrido = 0;
       }
       this.rutas = rutas;

@@ -2,9 +2,9 @@
   <div>
     <v-icon>mdi-bus</v-icon>
     <v-badge
+        overlap
         bordered
         :color="this.esRojo()? 'error' : 'info'"
-        overlap
         :content="horario.numero"
         :value="horario.numero"
     >

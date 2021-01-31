@@ -52,46 +52,23 @@
     ></v-select>
     <div v-if="horarios.length > 0">
       <v-row justify="center">
-        <h6 class="text-h5">Promedios</h6>
+        <h6 class="text-h5 mb-2">Promedio R3: {{ promedios.combi | milisegundosCortos }}</h6>
       </v-row>
-      <v-row justify="center">
-        <v-chip class="mr-1" color="success">General</v-chip>
-        <v-chip class="mr-1" color="info">Combi</v-chip>
-        <v-chip color="red" dark>Rojo</v-chip>
-      </v-row>
-      <v-row class="mt-4" justify="center">
-        <v-chip class="mr-1 my-1" color="success">{{ promedios.general | milisegundosALegible }}</v-chip>
-        <v-chip class="mr-1 my-1" color="info">{{ promedios.combi | milisegundosALegible }}</v-chip>
-        <v-chip class="mr-1 my-1" color="red" dark>{{ promedios.rojo | milisegundosALegible }}</v-chip>
-      </v-row>
-      <v-divider class="mt-4"></v-divider>
+      <v-divider></v-divider>
       <div v-for="(horario, i) in horarios" :key="i">
         <v-list-item two-line>
           <v-list-item-content>
             <v-list-item-title>
-              <h6 class="text-h6">
-                {{ horario.hora }}
-              </h6>
             </v-list-item-title>
-            <TipoTransporte :horario="horario"></TipoTransporte>
-            <v-row justify="center">
+            <v-row>
               <v-col>
-                <p v-show="horario.tiempoMismoTipo">
-                  <strong>{{ horario.tipoUnidad }} anterior:
-                    <br>
-                  </strong> {{
-                    horario.tiempoMismoTipo | milisegundosALegible
-                  }}
-                </p>
+                <TipoTransporte :horario="horario"></TipoTransporte>
               </v-col>
               <v-col>
-                <p v-show="horario.tiempoGeneral">
-                  <strong>Transporte anterior: </strong>
-                  <br>
-                  {{ horario.tiempoGeneral | milisegundosALegible }}
-                </p>
+                <v-icon>mdi-clock-outline</v-icon>
+                {{ horario.hora }} |
+                <strong>{{ horario.tiempoGeneral| milisegundosCortos }}</strong>
               </v-col>
-
             </v-row>
           </v-list-item-content>
         </v-list-item>

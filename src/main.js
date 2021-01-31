@@ -24,6 +24,15 @@ Vue.filter("milisegundosALegible", milisegundos => {
     return respuesta;
 });
 
+Vue.filter("milisegundosCortos", milisegundos => {
+    if (!milisegundos) {
+        return "-";
+    }
+    const transcurrido = new Date(milisegundos).toISOString().substr(14, 5);
+    return transcurrido;
+
+});
+
 new Vue({
     vuetify,
     render: h => h(App)

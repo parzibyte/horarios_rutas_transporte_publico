@@ -13,15 +13,11 @@
       <v-text-field
           v-model="numero"
           label="Número"
-          type="number"
-          required
       ></v-text-field>
 
       <v-text-field
           v-model="comision"
           label="Comisión"
-          required
-          type="number"
       ></v-text-field>
       <v-card-actions>
         <v-spacer></v-spacer>

@@ -37,26 +37,29 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
+            dark
+            color="red"
+            large
+            @click="guardarMicro()"
+        >
+          Rojo
+        </v-btn>
+        <v-btn
             @click="cerrar"
+            large
             text
         >
           Cancelar
         </v-btn>
-
         <v-btn
             color="blue "
+            large
             dark
             @click="guardarCombi()"
         >
           R-3
         </v-btn>
-        <v-btn
-            dark
-            color="red"
-            @click="guardarMicro()"
-        >
-          Rojo
-        </v-btn>
+
       </v-card-actions>
     </v-card>
   </v-dialog>

@@ -21,14 +21,6 @@
         <v-icon>mdi-file-table-box-multiple</v-icon>
       </v-tab>
       <v-tab>
-        Números
-        <v-icon>mdi-format-list-numbered</v-icon>
-      </v-tab>
-      <v-tab>
-        Comisiones
-        <v-icon>mdi-cash-100</v-icon>
-      </v-tab>
-      <v-tab>
         Acerca de
         <v-icon>mdi-information-outline</v-icon>
       </v-tab>
@@ -44,12 +36,6 @@
         <Reportes ref="reportes"></Reportes>
       </v-tab-item>
       <v-tab-item>
-        <Numeros ref="numeros"></Numeros>
-      </v-tab-item>
-      <v-tab-item>
-        <Comisiones></Comisiones>
-      </v-tab-item>
-      <v-tab-item>
         <AcercaDe></AcercaDe>
       </v-tab-item>
     </v-tabs-items>
@@ -61,19 +47,16 @@ import Rutas from "@/components/Rutas";
 import Horarios from "@/components/Horarios";
 import Reportes from "@/components/Reportes";
 import AcercaDe from "@/components/AcercaDe";
-import Numeros from "@/components/Numeros";
-import Comisiones from "@/components/Comisiones";
 
 export default {
   name: 'HelloWorld',
-  components: {Comisiones, Numeros, AcercaDe, Reportes, Horarios, Rutas},
+  components: {AcercaDe, Reportes, Horarios, Rutas},
   data: () => ({
     tab: 1,
   }),
   methods: {
     actualizarReporte() {
       this.$refs.reportes.refrescarTodo();
-      this.$refs.numeros.refrescarTodo();
     },
     actualizarRutasEnHorarios() {
       this.$refs.horarios.obtenerRutas();

@@ -14,6 +14,7 @@
       </v-alert>
       <v-container>
         <v-text-field
+            ref="campoNumero"
             v-model="numeroUnidad"
             label="Número"
             type="number"
@@ -91,6 +92,15 @@ export default {
   },
   beforeDestroy() {
     console.log("Destroy!");
+  },
+  watch: {
+    mostrar() {
+      if (this.mostrar) {
+        setTimeout(() => {
+          this.$refs.campoNumero.$refs.input.focus();
+        }, 50);
+      }
+    },
   },
   methods: {
     guardarCombi() {

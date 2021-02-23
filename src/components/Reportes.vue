@@ -1,46 +1,5 @@
 <template>
-  <v-card class="mx-2" flat>
-    <v-dialog
-        ref="dialog"
-        v-model="modal"
-        :return-value.sync="fechaSeleccionada"
-        persistent
-        width="290px"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-text-field
-            @change="obtenerHorariosConFechaYRutaSeleccionada()"
-            v-model="fechaSeleccionada"
-            label="Fecha"
-            prepend-icon="mdi-calendar"
-            readonly
-            v-bind="attrs"
-            v-on="on"
-        ></v-text-field>
-      </template>
-      <v-date-picker
-          @change="obtenerHorariosConFechaYRutaSeleccionada()"
-          locale="es-la"
-          v-model="fechaSeleccionada"
-          scrollable
-      >
-        <v-spacer></v-spacer>
-        <v-btn
-            text
-            color="primary"
-            @click="modal = false"
-        >
-          Cancelar
-        </v-btn>
-        <v-btn
-            text
-            color="primary"
-            @click="$refs.dialog.save(fechaSeleccionada)"
-        >
-          OK
-        </v-btn>
-      </v-date-picker>
-    </v-dialog>
+  <v-card style="background-color: #18FFFF" class="m2" flat>
     <v-select
         @change="obtenerHorariosConFechaYRutaSeleccionada()"
         :items="rutas"
@@ -49,7 +8,11 @@
         label="Ruta"
         v-model="rutaSeleccionada"
         no-data-text="No has registrado ninguna ruta"
-    ></v-select>
+    >
+      <template v-slot:item="{ item}">
+        <h1>{{ item.nombre }}</h1>
+      </template>
+    </v-select>
     <div v-if="horarios.length > 0">
       <v-row justify="center">
         <h6 class="text-h5 mb-2">Promedio R3: {{ promedios.combi | milisegundosCortos }}</h6>
@@ -61,13 +24,13 @@
             <v-list-item-title>
             </v-list-item-title>
             <v-row>
-              <v-col>
+              <v-col cols="5">
                 <TipoTransporte :horario="horario"></TipoTransporte>
               </v-col>
-              <v-col>
+              <v-col cols="7" style="font-size: 1.2rem">
                 <v-icon>mdi-clock-outline</v-icon>
                 {{ horario.hora }} |
-                <strong>{{ horario.tiempoGeneral| milisegundosCortos }}</strong>
+                <strong style="font-size: 1.5rem">{{ horario.tiempoGeneral| milisegundosCortos }}</strong>
               </v-col>
             </v-row>
           </v-list-item-content>

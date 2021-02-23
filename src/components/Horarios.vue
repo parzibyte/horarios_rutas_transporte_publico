@@ -9,7 +9,9 @@
             <v-list-item :style="{backgroundColor: ruta.marcada ? '#FF8F00' : 'white'}"
                          @click="ruta.marcada = !ruta.marcada" two-line>
               <v-list-item-content>
-                <v-list-item-title>{{ ruta.nombre }}</v-list-item-title>
+                <v-list-item-title style="font-size: 1.3rem">
+                  <strong>{{ ruta.nombre }}</strong>
+                </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>

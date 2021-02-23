@@ -5,13 +5,6 @@
       max-width="350"
   >
     <v-card class="pt-2">
-      <v-alert
-          class="mx-2 my-2"
-          dense
-          type="info"
-      >
-        <strong class="text-h4">{{ ruta.nombre }}</strong>
-      </v-alert>
       <v-container>
         <v-text-field
             ref="campoNumero"
@@ -20,6 +13,14 @@
             type="number"
         ></v-text-field>
       </v-container>
+      <v-alert
+          class="mx-2 my-2"
+          dense
+          type="success"
+      >
+        <strong class="text-h4">{{ ruta.nombre }} | {{numeroUnidad}}</strong>
+      </v-alert>
+
       <div v-show="!tomarHoraActual">
         <v-time-picker
             full-width

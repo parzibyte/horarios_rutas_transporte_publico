@@ -17,6 +17,10 @@
         <v-icon>mdi-file-table-box-multiple</v-icon>
       </v-tab>
       <v-tab>
+        Comisiones
+        <v-icon>mdi-currency-usd</v-icon>
+      </v-tab>
+      <v-tab>
         Rutas
         <v-icon>mdi-bus</v-icon>
       </v-tab>
@@ -34,6 +38,9 @@
         <Reportes ref="reportes"></Reportes>
       </v-tab-item>
       <v-tab-item>
+        <Comisiones></Comisiones>
+      </v-tab-item>
+      <v-tab-item>
         <Rutas @actualizadas="actualizarRutasEnHorarios"></Rutas>
       </v-tab-item>
       <v-tab-item>
@@ -48,10 +55,11 @@ import Rutas from "@/components/Rutas";
 import Horarios from "@/components/Horarios";
 import Reportes from "@/components/Reportes";
 import AcercaDe from "@/components/AcercaDe";
+import Comisiones from "@/components/Comisiones";
 
 export default {
   name: 'HelloWorld',
-  components: {AcercaDe, Reportes, Horarios, Rutas},
+  components: {Comisiones, AcercaDe, Reportes, Horarios, Rutas},
   data: () => ({
     tab: 1,
   }),

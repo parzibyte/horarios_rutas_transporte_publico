@@ -110,6 +110,7 @@ export default {
     await this.refrescarTodo();
   },
   methods: {
+
     async refrescarTodo() {
       this.fechaSeleccionada = Utiles.formatearFechaActual();
       await this.obtenerRutas();

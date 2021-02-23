@@ -9,10 +9,6 @@
     >
       <v-tabs-slider color="yellow"></v-tabs-slider>
       <v-tab>
-        Rutas
-        <v-icon>mdi-bus</v-icon>
-      </v-tab>
-      <v-tab>
         Horarios
         <v-icon>mdi-clipboard-clock</v-icon>
       </v-tab>
@@ -21,19 +17,24 @@
         <v-icon>mdi-file-table-box-multiple</v-icon>
       </v-tab>
       <v-tab>
+        Rutas
+        <v-icon>mdi-bus</v-icon>
+      </v-tab>
+      <v-tab>
         Acerca de
         <v-icon>mdi-information-outline</v-icon>
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
-      <v-tab-item>
-        <Rutas @actualizadas="actualizarRutasEnHorarios"></Rutas>
-      </v-tab-item>
+
       <v-tab-item>
         <Horarios @actualizados="actualizarReporte()" ref="horarios"></Horarios>
       </v-tab-item>
       <v-tab-item>
         <Reportes ref="reportes"></Reportes>
+      </v-tab-item>
+      <v-tab-item>
+        <Rutas @actualizadas="actualizarRutasEnHorarios"></Rutas>
       </v-tab-item>
       <v-tab-item>
         <AcercaDe></AcercaDe>

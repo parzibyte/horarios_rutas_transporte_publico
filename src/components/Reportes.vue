@@ -27,10 +27,10 @@
               <v-col cols="5">
                 <TipoTransporte :horario="horario"></TipoTransporte>
               </v-col>
-              <v-col cols="7" style="font-size: 1.2rem">
+              <v-col cols="7" style="font-size: 1.0rem">
                 <v-icon>mdi-clock-outline</v-icon>
                 {{ horario.hora }} |
-                <strong style="font-size: 1.5rem">{{ horario.tiempoGeneral| milisegundosCortos }}</strong>
+                <strong style="font-size: 1.3rem">{{ horario.tiempoGeneral| milisegundosCortos }}</strong>
               </v-col>
             </v-row>
           </v-list-item-content>

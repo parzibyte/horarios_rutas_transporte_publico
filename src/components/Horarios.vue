@@ -182,10 +182,10 @@ export default {
             ruta.transcurrido = "";
             continue;
           }
-          const fechaUltimoHorario = new Date(fechaActualComoCadena + " " + horario.hora);
+          const fechaUltimoHorario = new Date(fechaActualComoCadena + "T" + horario.hora);
           horario.transcurrido = fechaActual - fechaUltimoHorario;
           if (indice === 1) {
-            horario.transcurrido = new Date(fechaActualComoCadena + " " + ruta.horarios[0].hora) - fechaUltimoHorario;
+            horario.transcurrido = new Date(fechaActualComoCadena + "T" + ruta.horarios[0].hora) - fechaUltimoHorario;
           }
           indice++;
         }

@@ -1,21 +1,13 @@
 <template>
   <div>
-    <v-icon>mdi-bus</v-icon>
-    <v-badge
-        overlap
-        bordered
+    <v-btn
+        style="border: 1px solid white !important;"
+        class="white--text"
         :color="this.esRojo()? 'error' : 'info'"
-        :content="horario.numero"
-        :value="horario.numero"
+        depressed
     >
-      <v-btn
-          class="white--text"
-          :color="this.esRojo()? 'error' : 'info'"
-          depressed
-      >
-        {{ horario.tipoUnidad }}
-      </v-btn>
-    </v-badge>
+      {{ horario.numero }}
+    </v-btn>
   </div>
 </template>
 

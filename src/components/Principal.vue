@@ -61,7 +61,7 @@ export default {
   name: 'HelloWorld',
   components: {Comisiones, AcercaDe, Reportes, Horarios, Rutas},
   data: () => ({
-    tab: 1,
+    tab: 0,
   }),
   methods: {
     actualizarReporte() {

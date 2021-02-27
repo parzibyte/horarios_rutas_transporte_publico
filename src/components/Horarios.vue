@@ -3,14 +3,14 @@
     <DialogoAgregarHorario @guardado="onHorarioGuardado" :ruta="rutaSeleccionada" :mostrar="dialogoRegistrarHorario"
                            @cerrar="dialogoRegistrarHorario=false"></DialogoAgregarHorario>
     <v-row>
-      <v-col style="padding: 0" cols="3" v-show="mostrarNotas">
+      <v-col style="padding: 0" cols="2" v-show="mostrarNotas">
         <div v-if="rutasTemporales.length > 0">
-          <div v-for="(ruta, i) in rutasTemporales" :key="i">
+          <div @click="clickRutaTemporal(ruta)" v-for="(ruta, i) in rutasTemporales" :key="i">
             <v-list-item :style="{backgroundColor: ruta.marcada ? '#FF8F00' : 'white'}"
-                         @click="ruta.marcada = !ruta.marcada" two-line>
+                         two-line>
               <v-list-item-content>
-                <v-list-item-title style="font-size: 1.3rem">
-                  <strong>{{ ruta.nombre }}</strong>
+                <v-list-item-title style="font-size: 0.77rem">
+                  <strong>{{ ruta.nombre }}<br>{{ ruta.sufijo }}</strong>
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -18,30 +18,44 @@
           </div>
         </div>
       </v-col>
-      <v-col :cols="mostrarNotas ? 9 : 12">
+      <v-col :cols="mostrarNotas ? 10 : 12">
         <div v-if="rutas.length > 0">
           <div v-for="(ruta, i) in rutas" :key="i">
             <v-list-item :style="{backgroundColor: ruta.color}" @click="registrarHorario(ruta)" three-line>
-              <v-list-item-content>
+              <v-list-item-content style="padding: 0; margin:0;">
                 <v-list-item-title>
-                  <h5 class="text-h4" style="">{{ ruta.nombre }}</h5>
+                  <h5 class="text-h4" style="text-align: right; margin-bottom: 10px">{{ ruta.nombre }}</h5>
                   <div v-if="ruta.horarios">
                     <v-row v-for="(horarioReal, clave) in ruta.horarios" :key="clave">
-                      <v-col cols="4">
-                        <TipoTransporte :horario="horarioReal"></TipoTransporte>
-                      </v-col>
-                      <v-col
-                          cols="8"
-                          :style="{backgroundColor: horarioReal.transcurrido >= rangoNotificacionInicio && horarioReal.transcurrido <= rangoNotificacionFin && clave === 0 && esRojo(horarioReal) ? 'white': 'inherit'}"
-                          style="font-size: 1.2rem;"
-                      >
-                        <v-icon>mdi-clock-outline</v-icon>
-                        {{ horarioReal.hora }} |
-                        <strong style="font-size: 2rem;">{{ horarioReal.transcurrido | milisegundosCortos }}</strong>
-                      </v-col>
+
+                      <template v-if="clave === 0">
+
+                        <v-col style="padding-bottom: 0 !important; padding-top: 0 !important; margin: 0 !important;"
+                               cols="3">
+                          <TipoTransporte :horario="horarioReal" v-if="clave === 0"></TipoTransporte>
+                        </v-col>
+                        <v-col
+                            style="padding-bottom: 0 !important; padding-top: 0 !important; margin: 0 !important; font-size: 1.2rem"
+                            cols="9"
+                            :style="{backgroundColor: horarioReal.transcurrido >= rangoNotificacionInicio && horarioReal.transcurrido <= rangoNotificacionFin && clave === 0 && esRojo(horarioReal) ? 'white': 'inherit'}"
+                        >
+
+                          {{ horarioReal.hora }} |
+                          <strong :style="{fontSize: clave === 0 ? '1.5rem' : '1.2rem'}">{{
+                              horarioReal.transcurrido | milisegundosCortos
+                            }}</strong>
+                        </v-col>
+                      </template>
+                      <template v-else>
+                        <v-col cols="12"
+                               style="padding-top: 0 !important; padding-bottom: 0 !important; text-align: right">
+                          <p>
+                            Se llevó <strong>{{ horarioReal.transcurrido | milisegundosCortos }}</strong> de
+                            {{ horarioReal.tipoUnidad }}:<strong>{{ horarioReal.numero }}</strong>
+                          </p>
+                        </v-col>
+                      </template>
                     </v-row>
-                    <h5 class="text-h6">
-                    </h5>
                   </div>
                   <div v-else><p>
                     Sin información de horario. Toca para agregar
@@ -62,17 +76,6 @@
           </v-alert>
         </div>
       </v-col>
-      <v-btn
-          color="primary"
-          fab
-          elevation="2"
-          left
-          bottom
-          fixed
-          @click="intercambiarVista()"
-      >
-        <v-icon>mdi-car-connected</v-icon>
-      </v-btn>
     </v-row>
 
     <v-snackbar top timeout="700" v-model="snackbar.mostrar">
@@ -100,29 +103,34 @@ export default {
       texto: "",
       mostrar: false,
     },
-    mostrarNotas: false,
+    mostrarNotas: true,
     dialogoRegistrarHorario: false,
     rutas: [],
     rutasTemporales: [
       {
         nombre: "TALZ",
         marcada: false,
+        sufijo: "",
       },
       {
         nombre: "CALI",
         marcada: false,
+        sufijo: "",
       },
       {
         nombre: "TEZO",
         marcada: false,
+        sufijo: "",
       },
       {
         nombre: "SOSA",
         marcada: false,
+        sufijo: "",
       },
       {
         nombre: "SANI",
         marcada: false,
+        sufijo: "",
       },
     ],
     rutaSeleccionada: {},
@@ -134,7 +142,14 @@ export default {
     this.iniciarIntervalRefrescarTiempo();
   },
   methods: {
-
+    clickRutaTemporal(ruta) {
+      ruta.marcada = !ruta.marcada;
+      if (ruta.marcada) {
+        ruta.sufijo = prompt("a");
+      } else {
+        ruta.sufijo = "";
+      }
+    },
     esRojo(horario) {
       return horario.tipoUnidad === Constantes.TIPO_ROJO;
     },

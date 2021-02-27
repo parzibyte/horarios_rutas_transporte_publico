@@ -1,5 +1,5 @@
 <template>
-  <v-card style="background-color: #18FFFF" class="m2" flat>
+  <v-card style="background-color: #18FFFF; margin: 0 40px 0 40px;"  flat>
     <v-select
         @change="obtenerHorariosConFechaYRutaSeleccionada()"
         :items="rutas"
@@ -24,10 +24,10 @@
             <v-list-item-title>
             </v-list-item-title>
             <v-row>
-              <v-col cols="5">
+              <v-col cols="4" style="text-align: right">
                 <TipoTransporte :horario="horario"></TipoTransporte>
               </v-col>
-              <v-col cols="7" style="font-size: 1.0rem">
+              <v-col cols="8" style="font-size: 1.0rem">
                 <v-icon>mdi-clock-outline</v-icon>
                 {{ horario.hora }} |
                 <strong style="font-size: 1.3rem">{{ horario.tiempoGeneral| milisegundosCortos }}</strong>

@@ -1,8 +1,8 @@
 const Utiles = {
     restarHorarios(a, b) {
         const fecha = this.formatearFechaActual();
-        const fechaYHoraA = new Date(fecha + " " + a);
-        const fechaYHoraB = new Date(fecha + " " + b);
+        const fechaYHoraA = new Date(fecha + "T" + a);
+        const fechaYHoraB = new Date(fecha + "T" + b);
         return fechaYHoraA - fechaYHoraB;
     },
     idConSufijo(tipo) {

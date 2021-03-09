@@ -108,7 +108,17 @@ export default {
     rutas: [],
     rutasTemporales: [
       {
+        nombre: "TACO",
+        marcada: false,
+        sufijo: "",
+      },
+      {
         nombre: "TALZ",
+        marcada: false,
+        sufijo: "",
+      },
+      {
+        nombre: "TEZO",
         marcada: false,
         sufijo: "",
       },
@@ -117,8 +127,39 @@ export default {
         marcada: false,
         sufijo: "",
       },
+
+      {
+        nombre: "SOSA",
+        marcada: false,
+        sufijo: "",
+      },
+      {
+        nombre: "SANI",
+        marcada: false,
+        sufijo: "",
+      },
+      {
+        nombre: "  ",
+        marcada: false,
+        sufijo: "",
+      },
+      {
+        nombre: "TACO",
+        marcada: false,
+        sufijo: "",
+      },
+      {
+        nombre: "TALZ",
+        marcada: false,
+        sufijo: "",
+      },
       {
         nombre: "TEZO",
+        marcada: false,
+        sufijo: "",
+      },
+      {
+        nombre: "CALI",
         marcada: false,
         sufijo: "",
       },
@@ -145,7 +186,7 @@ export default {
     clickRutaTemporal(ruta) {
       ruta.marcada = !ruta.marcada;
       if (ruta.marcada) {
-        ruta.sufijo = prompt("a");
+        ruta.sufijo = prompt("Ingresa el texto: ");
       } else {
         ruta.sufijo = "";
       }

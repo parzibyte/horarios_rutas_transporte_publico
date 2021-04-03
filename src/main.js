@@ -32,6 +32,14 @@ Vue.filter("milisegundosCortos", milisegundos => {
     return transcurrido;
 
 });
+Vue.filter("milisegundosConHoras", milisegundos => {
+    if (!milisegundos) {
+        return "-";
+    }
+    const transcurrido = new Date(milisegundos).toISOString().substr(11, 8);
+    return transcurrido;
+
+});
 
 new Vue({
     vuetify,

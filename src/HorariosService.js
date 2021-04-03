@@ -3,6 +3,21 @@ import Utiles from "@/Utiles";
 import Constantes from "@/Constantes";
 
 const HorariosService = {
+    async obtenerPorTipoUnidadYNumero(tipoUnidad, numero) {
+        const horarios = await db.find({
+            selector: {
+                _id: {
+                    $gte: Constantes.PREFIJO_HORARIOS,
+                    $lte: Constantes.PREFIJO_HORARIOS + "\ufff0",
+                },
+                tipoUnidad, numero,
+                hora: {
+                    $gte: null
+                },
+            },
+        });
+        return horarios.docs;
+    },
     async eliminarDeRuta(idRuta) {
         const horarios = await db.find({
             selector: {
@@ -33,7 +48,7 @@ const HorariosService = {
                     $gte: Constantes.PREFIJO_HORARIOS,
                     $lte: Constantes.PREFIJO_HORARIOS + "\ufff0",
                 },
-                fecha, idRuta,tipoUnidad,
+                fecha, idRuta, tipoUnidad,
                 hora: {
                     $gte: null
                 },
@@ -53,7 +68,7 @@ const HorariosService = {
                     $gte: null
                 },
             },
-            sort: [{"hora": "desc"}],
+            sort: [{ "hora": "desc" }],
         });
         return rutas.docs;
     },
@@ -69,7 +84,7 @@ const HorariosService = {
                     $gt: null,//null es menor que todas las cosas
                 }
             },
-            sort: [{"hora": "desc"}],
+            sort: [{ "hora": "desc" }],
             limit: 2,
         });
         const docs = rutas.docs;

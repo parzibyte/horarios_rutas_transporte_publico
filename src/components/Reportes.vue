@@ -1,36 +1,39 @@
 <template>
-  <v-card style="background-color: #18FFFF; margin: 0 40px 0 40px;"  flat>
+  <v-card style="background-color: #18ffff; margin: 0 40px 0 40px" flat>
     <v-select
-        @change="obtenerHorariosConFechaYRutaSeleccionada()"
-        :items="rutas"
-        item-text="nombre"
-        item-value="_id"
-        label="Ruta"
-        v-model="rutaSeleccionada"
-        no-data-text="No has registrado ninguna ruta"
+      @change="obtenerHorariosConFechaYRutaSeleccionada()"
+      :items="rutas"
+      item-text="nombre"
+      item-value="_id"
+      label="Ruta"
+      v-model="rutaSeleccionada"
+      no-data-text="No has registrado ninguna ruta"
     >
-      <template v-slot:item="{ item}">
+      <template v-slot:item="{ item }">
         <h1>{{ item.nombre }}</h1>
       </template>
     </v-select>
     <div v-if="horarios.length > 0">
       <v-row justify="center">
-        <h6 class="text-h5 mb-2">Promedio R3: {{ promedios.combi | milisegundosCortos }}</h6>
+        <h6 class="text-h5 mb-2">
+          Promedio R3: {{ promedios.combi | milisegundosCortos }}
+        </h6>
       </v-row>
       <v-divider></v-divider>
       <div v-for="(horario, i) in horarios" :key="i">
         <v-list-item two-line>
           <v-list-item-content>
-            <v-list-item-title>
-            </v-list-item-title>
+            <v-list-item-title> </v-list-item-title>
             <v-row>
               <v-col cols="4" style="text-align: right">
                 <TipoTransporte :horario="horario"></TipoTransporte>
               </v-col>
-              <v-col cols="8" style="font-size: 1.0rem">
+              <v-col cols="8" style="font-size: 1rem">
                 <v-icon>mdi-clock-outline</v-icon>
                 {{ horario.hora }} |
-                <strong style="font-size: 1.3rem">{{ horario.tiempoGeneral| milisegundosCortos }}</strong>
+                <strong style="font-size: 1.3rem">{{
+                  horario.tiempoGeneral | milisegundosCortos
+                }}</strong>
               </v-col>
             </v-row>
           </v-list-item-content>
@@ -55,7 +58,7 @@ import Constantes from "@/Constantes";
 
 export default {
   name: "Reportes",
-  components: {TipoTransporte},
+  components: { TipoTransporte },
   data: () => ({
     fechaSeleccionada: "",
     rutas: [],
@@ -70,12 +73,12 @@ export default {
     TIPO_COMBI: Constantes.TIPO_COMBI,
   }),
   async mounted() {
-    await this.refrescarTodo();
+    await this.obtenerRutas();
+    this.fechaSeleccionada = Utiles.formatearFechaActual();
+    // await this.refrescarTodo();
   },
   methods: {
-
     async refrescarTodo() {
-      this.fechaSeleccionada = Utiles.formatearFechaActual();
       await this.obtenerRutas();
       if (this.rutas.length > 0) {
         this.rutaSeleccionada = this.rutas[0]._id;
@@ -89,7 +92,10 @@ export default {
       if (!this.fechaSeleccionada || !this.rutaSeleccionada) {
         return;
       }
-      const horarios = await HorariosService.obtenerPorFechaEIdRuta(this.fechaSeleccionada, this.rutaSeleccionada);
+      const horarios = await HorariosService.obtenerPorFechaEIdRuta(
+        this.fechaSeleccionada,
+        this.rutaSeleccionada
+      );
       if (horarios.length > 0) {
         let ultimaHoraRojo = "";
         let ultimaHoraCombi = "";
@@ -133,7 +139,7 @@ export default {
         this.promedios.combi = sumatoriaCombi / contadorCombi;
       }
       this.horarios = horarios;
-    }
-  }
-}
+    },
+  },
+};
 </script>

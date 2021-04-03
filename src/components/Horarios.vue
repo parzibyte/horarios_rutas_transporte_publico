@@ -33,7 +33,7 @@
           <div v-for="(ruta, i) in rutas" :key="i">
             <v-list-item
               :style="{ backgroundColor: ruta.color }"
-              @click="registrarHorario(ruta)"
+              @click="registrarHorario(ruta, i)"
               three-line
             >
               <v-list-item-content style="padding: 0; margin: 0">
@@ -151,6 +151,7 @@ export default {
   name: "Horarios",
   components: { TipoTransporte, DialogoAgregarHorario },
   data: () => ({
+    ultimoIndice: null,
     rangoNotificacionInicio: 300000,
     rangoNotificacionFin: 420000,
     snackbar: {
@@ -166,7 +167,7 @@ export default {
         marcada: false,
         sufijo: "",
       },
-      
+
       {
         nombre: "TALZ",
         marcada: false,
@@ -288,12 +289,24 @@ export default {
         mostrar: true,
       };
       this.dialogoRegistrarHorario = false;
-      this.$emit("actualizados");
-      await this.obtenerRutas();
+      // this.$emit("actualizados");
+      this.colocarHorarioARuta(this.ultimoIndice);
     },
-    registrarHorario(ruta) {
+    registrarHorario(ruta, indice) {
+      this.ultimoIndice = indice;
       this.rutaSeleccionada = ruta;
       this.dialogoRegistrarHorario = true;
+    },
+    async colocarHorarioARuta(indice) {
+      const fechaActual = Utiles.formatearFechaActual();
+      const horarios = await HorariosService.obtenerUltimoHorarioRegistrado(
+        fechaActual,
+        this.rutas[indice]._id
+      );
+      for (const horario of horarios) {
+        horario.transcurrido = 0;
+      }
+      this.rutas[indice].horarios = horarios;
     },
     async obtenerRutas() {
       const fechaActual = Utiles.formatearFechaActual();

@@ -17,8 +17,8 @@
         <v-icon>mdi-file-table-box-multiple</v-icon>
       </v-tab>
       <v-tab>
-        Reporte 2
-        <v-icon>mdi-file-table-box-multiple</v-icon>
+        Unidades
+        <v-icon>mdi-bus-clock</v-icon>
       </v-tab>
       <v-tab>
         Comisiones
@@ -35,7 +35,7 @@
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item>
-        <Horarios @actualizados="actualizarReporte()" ref="horarios"></Horarios>
+        <Horarios ref="horarios"></Horarios>
       </v-tab-item>
       <v-tab-item>
         <Reportes ref="reportes"></Reportes>
@@ -83,7 +83,7 @@ export default {
     },
     actualizarRutasEnHorarios() {
       this.$refs.horarios.obtenerRutas();
-      this.$refs.reportes.refrescarTodo();
+      // this.$refs.reportes.refrescarTodo();
     },
   },
 };

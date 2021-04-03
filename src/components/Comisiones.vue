@@ -4,21 +4,21 @@
     <DialogoAgregarComision @guardado="onComisionGuardada" :numero-unidad="numeroUnidadSeleccionada"
                             :mostrar="dialogoComision"
                             @cerrar="dialogoComision=false"></DialogoAgregarComision>
-    <h2 class="ml-2">Total: ${{ total() }}</h2>
-    <v-btn class="mb-3 ml-2" @click="eliminarTodas" color="info">Eliminar todas</v-btn>
-    <br>
+    <h2 class="ml-2 mt-1">Total: ${{ total() }}
+    <v-btn class="mb-3 ml-2 mt-1" @click="eliminarTodas" color="info">Eliminar todas</v-btn>
+</h2>
     <v-badge
         overlap
         bordered
         color="success"
+        class="mx-3 mt-2"
         :content="unidad.comision"
         v-for="(unidad, indice) in unidades" :key="indice"
     >
       <v-btn
           @click="agregarComision(unidad)"
-          x-large
           depressed
-          color="error" dark class="mx-3 my-2">{{ unidad.numero }}
+          color="error" >{{ unidad.numero }}
       </v-btn>
     </v-badge>
   </v-card>

@@ -1,0 +1,31 @@
+<template>
+  <v-card class="px-1 py-1">
+    <strong>Tepepan</strong>
+    <ul>
+      <li>9:05</li>
+      <li>10:55</li>
+      <li>11:45</li>
+      <li>12:20</li>
+      <li>13:00</li>
+      <li>14:00</li>
+      <li>14:50</li>
+      <li>15:25</li>
+      <li>16:10</li>
+      <li>16:55</li>
+      <li>17:45</li>
+      <li>18:05</li>
+      <li>18:35</li>
+      <li>19:20</li>
+      <li>20:00</li>
+    </ul>
+    <strong>Huapaltepec</strong>
+
+    <ul>
+      <li>10:15</li>
+      <li>12:15</li>
+      <li>14:15</li>
+      <li>16:15</li>
+      <li>19:00</li>
+    </ul>
+  </v-card>
+</template>

@@ -29,6 +29,10 @@
         <v-icon>mdi-bus</v-icon>
       </v-tab>
       <v-tab>
+        fija
+        <v-icon>mdi-bus</v-icon>
+      </v-tab>
+      <v-tab>
         Acerca de
         <v-icon>mdi-information-outline</v-icon>
       </v-tab>
@@ -50,6 +54,9 @@
         <Rutas @actualizadas="actualizarRutasEnHorarios"></Rutas>
       </v-tab-item>
       <v-tab-item>
+        <RutaFija></RutaFija>
+      </v-tab-item>
+      <v-tab-item>
         <AcercaDe></AcercaDe>
       </v-tab-item>
     </v-tabs-items>
@@ -61,6 +68,7 @@ import Rutas from "@/components/Rutas";
 import Horarios from "@/components/Horarios";
 import Reportes from "@/components/Reportes";
 import ReportePorUnidad from "@/components/ReportePorUnidad";
+import RutaFija from "@/components/RutaFija";
 import AcercaDe from "@/components/AcercaDe";
 import Comisiones from "@/components/Comisiones";
 
@@ -73,6 +81,7 @@ export default {
     Horarios,
     Rutas,
     ReportePorUnidad,
+    RutaFija,
   },
   data: () => ({
     tab: 0,

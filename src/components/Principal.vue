@@ -21,6 +21,10 @@
         <v-icon>mdi-bus-clock</v-icon>
       </v-tab>
       <v-tab>
+        Rojos
+        <v-icon>mdi-bus-clock</v-icon>
+      </v-tab>
+      <v-tab>
         Comisiones
         <v-icon>mdi-currency-usd</v-icon>
       </v-tab>
@@ -48,6 +52,9 @@
         <ReportePorUnidad></ReportePorUnidad>
       </v-tab-item>
       <v-tab-item>
+        <Rojos></Rojos>
+      </v-tab-item>
+      <v-tab-item>
         <Comisiones></Comisiones>
       </v-tab-item>
       <v-tab-item>
@@ -71,6 +78,7 @@ import ReportePorUnidad from "@/components/ReportePorUnidad";
 import RutaFija from "@/components/RutaFija";
 import AcercaDe from "@/components/AcercaDe";
 import Comisiones from "@/components/Comisiones";
+import Rojos from "@/components/Rojos";
 
 export default {
   name: "HelloWorld",
@@ -82,6 +90,7 @@ export default {
     Rutas,
     ReportePorUnidad,
     RutaFija,
+    Rojos,
   },
   data: () => ({
     tab: 0,

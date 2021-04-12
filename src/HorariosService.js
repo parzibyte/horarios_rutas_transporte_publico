@@ -3,6 +3,21 @@ import Utiles from "@/Utiles";
 import Constantes from "@/Constantes";
 
 const HorariosService = {
+    async obtenerPorTipoUnidad(tipoUnidad) {
+        const horarios = await db.find({
+            selector: {
+                _id: {
+                    $gte: Constantes.PREFIJO_HORARIOS,
+                    $lte: Constantes.PREFIJO_HORARIOS + "\ufff0",
+                },
+                tipoUnidad,
+                hora: {
+                    $gte: null
+                },
+            },
+        });
+        return horarios.docs;
+    },
     async obtenerPorTipoUnidadYNumero(tipoUnidad, numero) {
         const horarios = await db.find({
             selector: {

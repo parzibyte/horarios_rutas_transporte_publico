@@ -258,7 +258,7 @@ export default {
       this.refrescarTiempoTranscurrido();
       this.idInterval = setInterval(() => {
         this.refrescarTiempoTranscurrido();
-      }, 5000);
+      }, 1000);
     },
     refrescarTiempoTranscurrido() {
       const fechaActualComoCadena = Utiles.formatearFechaActual();

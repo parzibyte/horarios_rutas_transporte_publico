@@ -9,21 +9,23 @@
     >
       <v-tabs-slider color="yellow"></v-tabs-slider>
       <v-tab>
+        Rojos
+        <v-icon>mdi-bus-clock</v-icon>
+      </v-tab>
+
+      <v-tab>
         Horarios
         <v-icon>mdi-clipboard-clock</v-icon>
-      </v-tab>
-      <v-tab>
-        Reportes
-        <v-icon>mdi-file-table-box-multiple</v-icon>
       </v-tab>
       <v-tab>
         Unidades
         <v-icon>mdi-bus-clock</v-icon>
       </v-tab>
       <v-tab>
-        Rojos
-        <v-icon>mdi-bus-clock</v-icon>
+        Reportes
+        <v-icon>mdi-file-table-box-multiple</v-icon>
       </v-tab>
+
       <v-tab>
         Comisiones
         <v-icon>mdi-currency-usd</v-icon>
@@ -43,16 +45,16 @@
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item>
-        <Horarios ref="horarios"></Horarios>
+        <Rojos></Rojos>
       </v-tab-item>
       <v-tab-item>
-        <Reportes ref="reportes"></Reportes>
+        <Horarios ref="horarios"></Horarios>
       </v-tab-item>
       <v-tab-item>
         <ReportePorUnidad></ReportePorUnidad>
       </v-tab-item>
       <v-tab-item>
-        <Rojos></Rojos>
+        <Reportes ref="reportes"></Reportes>
       </v-tab-item>
       <v-tab-item>
         <Comisiones></Comisiones>
@@ -93,7 +95,7 @@ export default {
     Rojos,
   },
   data: () => ({
-    tab: 0,
+    tab: 1,
   }),
   methods: {
     actualizarReporte() {

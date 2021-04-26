@@ -44,8 +44,6 @@ const HorariosService = {
             }
         });
         for (const horario of horarios.docs) {
-            console.log("Eliminando");
-            console.log(horario);
             await db.remove(horario);
         }
     },

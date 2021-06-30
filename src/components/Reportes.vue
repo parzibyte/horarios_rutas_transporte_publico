@@ -1,5 +1,9 @@
 <template>
-  <v-card style="background-color: #18ffff; margin: 0 40px 0 40px" flat>
+  <v-card
+    :style="{ backgroundColor: colorFondo }"
+    style="margin: 0 40px 0 40px"
+    flat
+  >
     <v-select
       @change="obtenerHorariosConFechaYRutaSeleccionada()"
       :items="rutas"
@@ -10,7 +14,12 @@
       no-data-text="No has registrado ninguna ruta"
     >
       <template v-slot:item="{ item }">
-        <h1 style="min-width: 100%; padding: 10px;" :style="{ backgroundColor: item.color }">{{ item.nombre }}</h1>
+        <h1
+          style="min-width: 100%; padding: 10px"
+          :style="{ backgroundColor: item.color }"
+        >
+          {{ item.nombre }}
+        </h1>
       </template>
     </v-select>
     <div v-if="horarios.length > 0">
@@ -76,6 +85,18 @@ export default {
     await this.obtenerRutas();
     this.fechaSeleccionada = Utiles.formatearFechaActual();
     // await this.refrescarTodo();
+  },
+  computed: {
+    colorFondo() {
+      const ruta = this.rutas.find((ruta) => {
+        return ruta._id === this.rutaSeleccionada;
+      });
+      if (ruta) {
+        return ruta.color;
+      } else {
+        return "#ffffff";
+      }
+    },
   },
   methods: {
     async refrescarTodo() {

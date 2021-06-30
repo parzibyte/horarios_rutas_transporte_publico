@@ -18,7 +18,11 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <div v-for="(horario, i) in horarios" :key="i">
+    <div
+      v-for="(horario, i) in horarios"
+      :key="i"
+      :style="{ backgroundColor: horario.colorRuta }"
+    >
       <v-list-item two-line>
         <v-list-item-content>
           <v-list-item-title> </v-list-item-title>
@@ -66,13 +70,16 @@ export default {
   },
   methods: {
     obtenerNombreRutaSegunId(id) {
-      return diccionario[id];
+      return diccionario[id].nombre;
+    },
+    obtenerColorRutaSegunId(id) {
+      return diccionario[id].color;
     },
     async obtenerRutas() {
       diccionario = {};
       const rutas = await RutasService.obtener();
       rutas.forEach((ruta) => {
-        diccionario[ruta._id] = ruta.nombre;
+        diccionario[ruta._id] = { nombre: ruta.nombre, color: ruta.color };
       });
     },
     async obtenerReporte() {
@@ -85,6 +92,7 @@ export default {
       horarios.reverse();
       horarios.forEach((horario) => {
         horario.nombreRuta = this.obtenerNombreRutaSegunId(horario.idRuta);
+        horario.colorRuta = this.obtenerColorRutaSegunId(horario.idRuta);
       });
       for (let i = horarios.length - 2; i >= 0; i--) {
         const tiempoA = horarios[i].hora;

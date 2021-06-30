@@ -114,7 +114,9 @@
                                 backgroundColor: esRojo(horarioReal)
                                   ? 'red'
                                   : 'inherit',
-                                  border: esRojo(horarioReal) ? '1px solid white' : 'none',
+                                border: esRojo(horarioReal)
+                                  ? '1px solid white'
+                                  : 'none',
                               }"
                               >{{ horarioReal.tipoUnidad }}:<strong>{{
                                 horarioReal.numero
@@ -161,8 +163,8 @@ export default {
   components: { TipoTransporte, DialogoAgregarHorario },
   data: () => ({
     ultimoIndice: null,
-    rangoNotificacionInicio: 300000, // 5 minutos (1000 milisegundos * 60 segundos * 5 minutos)
-    rangoNotificacionFin: 360000, // 6 minutos
+    rangoNotificacionInicio: 360000, // 6 minutos (1000 milisegundos * 60 segundos * 6 minutos)
+    rangoNotificacionFin: 420000, // 6 minutos
     snackbar: {
       texto: "",
       mostrar: false,
@@ -293,7 +295,8 @@ export default {
             if (
               horario.transcurrido >= this.rangoNotificacionInicio &&
               horario.transcurrido <= this.rangoNotificacionFin &&
-              !horario.notificacionMostrada
+              !horario.notificacionMostrada &&
+              this.esRojo(horario)
             ) {
               const nombreRuta = ruta.nombre;
               const tipoUnidad = horario.tipoUnidad;
@@ -305,7 +308,10 @@ export default {
                 duration: null,
               });
               horario.notificacionMostrada = true;
-            } else if (horario.transcurrido > this.rangoNotificacionFin) {
+            } else if (
+              horario.transcurrido > this.rangoNotificacionFin &&
+              this.esRojo(horario)
+            ) {
               horario.notificacionMostrada = false;
             }
           }

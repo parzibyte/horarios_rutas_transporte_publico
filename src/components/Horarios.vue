@@ -108,9 +108,18 @@
                             <strong>{{
                               horarioReal.transcurrido | milisegundosCortos
                             }}</strong>
-                            de {{ horarioReal.tipoUnidad }}:<strong>{{
-                              horarioReal.numero
-                            }}</strong>
+                            de
+                            <span
+                              :style="{
+                                backgroundColor: esRojo(horarioReal)
+                                  ? 'red'
+                                  : 'inherit',
+                                  border: esRojo(horarioReal) ? '1px solid white' : 'none',
+                              }"
+                              >{{ horarioReal.tipoUnidad }}:<strong>{{
+                                horarioReal.numero
+                              }}</strong></span
+                            >
                           </p>
                         </v-col>
                       </template>

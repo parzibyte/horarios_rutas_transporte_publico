@@ -152,8 +152,8 @@ export default {
   components: { TipoTransporte, DialogoAgregarHorario },
   data: () => ({
     ultimoIndice: null,
-    rangoNotificacionInicio: 300000,
-    rangoNotificacionFin: 420000,
+    rangoNotificacionInicio: 300000, // 5 minutos (1000 milisegundos * 60 segundos * 5 minutos)
+    rangoNotificacionFin: 360000, // 6 minutos
     snackbar: {
       texto: "",
       mostrar: false,
@@ -266,6 +266,7 @@ export default {
       for (const ruta of this.rutas) {
         let indice = 0;
         for (const horario of ruta.horarios) {
+          horario.mostrarNotificacion = true;
           if (!horario.hora) {
             ruta.transcurrido = "";
             continue;
@@ -278,6 +279,26 @@ export default {
             horario.transcurrido =
               new Date(fechaActualComoCadena + "T" + ruta.horarios[0].hora) -
               fechaUltimoHorario;
+          }
+          if (indice === 0) {
+            if (
+              horario.transcurrido >= this.rangoNotificacionInicio &&
+              horario.transcurrido <= this.rangoNotificacionFin &&
+              !horario.notificacionMostrada
+            ) {
+              const nombreRuta = ruta.nombre;
+              const tipoUnidad = horario.tipoUnidad;
+              const numero = horario.numero;
+              const aviso = `${nombreRuta} ${tipoUnidad} ${numero}`;
+              this.$toasted.show(aviso, {
+                // theme: "outline",
+                position: "bottom-center",
+                duration: null,
+              });
+              horario.notificacionMostrada = true;
+            } else if (horario.transcurrido > this.rangoNotificacionFin) {
+              horario.notificacionMostrada = false;
+            }
           }
           indice++;
         }

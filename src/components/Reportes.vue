@@ -10,7 +10,7 @@
       no-data-text="No has registrado ninguna ruta"
     >
       <template v-slot:item="{ item }">
-        <h1>{{ item.nombre }}</h1>
+        <h1 style="min-width: 100%; padding: 10px;" :style="{ backgroundColor: item.color }">{{ item.nombre }}</h1>
       </template>
     </v-select>
     <div v-if="horarios.length > 0">

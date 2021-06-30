@@ -12,20 +12,18 @@
         Rojos
         <v-icon>mdi-bus-clock</v-icon>
       </v-tab>
-
       <v-tab>
         Horarios
         <v-icon>mdi-clipboard-clock</v-icon>
       </v-tab>
       <v-tab>
-        Unidades
-        <v-icon>mdi-bus-clock</v-icon>
-      </v-tab>
-      <v-tab>
         Reportes
         <v-icon>mdi-file-table-box-multiple</v-icon>
       </v-tab>
-
+      <v-tab>
+        Unidades
+        <v-icon>mdi-bus-clock</v-icon>
+      </v-tab>
       <v-tab>
         Comisiones
         <v-icon>mdi-currency-usd</v-icon>
@@ -51,10 +49,10 @@
         <Horarios ref="horarios"></Horarios>
       </v-tab-item>
       <v-tab-item>
-        <ReportePorUnidad></ReportePorUnidad>
+        <Reportes ref="reportes"></Reportes>
       </v-tab-item>
       <v-tab-item>
-        <Reportes ref="reportes"></Reportes>
+        <ReportePorUnidad></ReportePorUnidad>
       </v-tab-item>
       <v-tab-item>
         <Comisiones></Comisiones>

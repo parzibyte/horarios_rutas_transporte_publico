@@ -22,6 +22,13 @@
         </h1>
       </template>
     </v-select>
+    <v-slider
+      min="40"
+      max="70"
+      step="5"
+      v-model="minutosSuma"
+      thumb-label="always"
+    ></v-slider>
     <div v-if="horarios.length > 0">
       <v-row justify="center">
         <h6 class="text-h5 mb-2">
@@ -42,6 +49,11 @@
                 {{ horario.hora }} |
                 <strong style="font-size: 1.3rem">{{
                   horario.tiempoGeneral | milisegundosCortos
+                }}</strong>
+                <br />
+                Predicción:
+                <strong>{{
+                  sumarConTiempoSeleccionado(horario.hora) | formatearFecha
                 }}</strong>
               </v-col>
             </v-row>
@@ -80,6 +92,7 @@ export default {
       general: "",
     },
     TIPO_COMBI: Constantes.TIPO_COMBI,
+    minutosSuma: null,
   }),
   async mounted() {
     await this.obtenerRutas();
@@ -99,6 +112,9 @@ export default {
     },
   },
   methods: {
+    sumarConTiempoSeleccionado(hora) {
+      return Utiles.sumarHorarios(hora, this.minutosSuma);
+    },
     async refrescarTodo() {
       await this.obtenerRutas();
       if (this.rutas.length > 0) {

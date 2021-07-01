@@ -1,4 +1,9 @@
 const Utiles = {
+    sumarHorarios(hora, minutos) {
+        const fecha = this.formatearFechaActual();
+        const fechaYHoraA = new Date(fecha + "T" + hora);
+        return new Date(fechaYHoraA.getTime() + (minutos * 60 * 1000));
+    },
     restarHorarios(a, b) {
         const fecha = this.formatearFechaActual();
         const fechaYHoraA = new Date(fecha + "T" + a);

@@ -2,8 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import Toasted from 'vue-toasted';
+const formateador = new Intl.DateTimeFormat('es-MX', {  timeStyle: 'medium' });
 Vue.use(Toasted);
 Vue.config.productionTip = false
+Vue.filter("formatearFecha", (fecha) => {
+    return formateador.format(fecha);
+})
 Vue.filter("milisegundosALegible", milisegundos => {
     if (!milisegundos) {
         return "-";

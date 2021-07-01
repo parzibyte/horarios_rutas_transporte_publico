@@ -174,11 +174,10 @@ export default {
     rutas: [],
     rutasTemporales: [
       {
-        nombre: "  ",
+        nombre: "TACO",
         marcada: false,
         sufijo: "",
       },
-
       {
         nombre: "TALZ",
         marcada: false,
@@ -195,32 +194,6 @@ export default {
         sufijo: "",
       },
 
-      {
-        nombre: "SOSA",
-        marcada: false,
-        sufijo: "",
-      },
-      {
-        nombre: "SANI",
-        marcada: false,
-        sufijo: "",
-      },
-
-      {
-        nombre: "TALZ",
-        marcada: false,
-        sufijo: "",
-      },
-      {
-        nombre: "TEZO",
-        marcada: false,
-        sufijo: "",
-      },
-      {
-        nombre: "CALI",
-        marcada: false,
-        sufijo: "",
-      },
       {
         nombre: "SOSA",
         marcada: false,

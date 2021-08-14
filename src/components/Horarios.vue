@@ -15,11 +15,11 @@
             :key="i"
           >
             <v-list-item
-              :style="{ backgroundColor: ruta.marcada ? '#FF8F00' : 'white' }"
+              :style="{ backgroundColor: ruta.marcada ? colorRutaTemporal : 'white' }"
               two-line
             >
               <v-list-item-content>
-                <v-list-item-title style="font-size: 0.77rem">
+                <v-list-item-title style="font-size: 0.7rem">
                   <strong>{{ ruta.nombre }}<br />{{ ruta.sufijo }}</strong>
                 </v-list-item-title>
               </v-list-item-content>
@@ -157,11 +157,14 @@ import HorariosService from "@/HorariosService";
 import Utiles from "@/Utiles";
 import TipoTransporte from "@/components/TipoTransporte";
 import Constantes from "@/Constantes";
-
+const CLAVE_LOCALSTORAGE = "rutas_temporales";
+const COLOR_NARANJA = "#C6FF00";
+const COLOR_MORADO = "#FF1744";
 export default {
   name: "Horarios",
   components: { TipoTransporte, DialogoAgregarHorario },
   data: () => ({
+    colorRutaTemporal: COLOR_NARANJA,
     ultimoIndice: null,
     rangoNotificacionInicio: 360000, // 6 minutos (1000 milisegundos * 60 segundos * 6 minutos)
     rangoNotificacionFin: 420000, // 6 minutos
@@ -210,10 +213,20 @@ export default {
     pausado: false,
   }),
   async mounted() {
+    if (!localStorage.getItem(CLAVE_LOCALSTORAGE)) {
+      this.guardarRutasTemporales();
+    }
+    this.rutasTemporales = JSON.parse(localStorage.getItem(CLAVE_LOCALSTORAGE));
     await this.obtenerRutas();
     this.iniciarIntervalRefrescarTiempo();
   },
   methods: {
+    guardarRutasTemporales() {
+      localStorage.setItem(
+        CLAVE_LOCALSTORAGE,
+        JSON.stringify(this.rutasTemporales)
+      );
+    },
     clickRutaTemporal(ruta) {
       ruta.marcada = !ruta.marcada;
       if (ruta.marcada) {
@@ -221,6 +234,7 @@ export default {
       } else {
         ruta.sufijo = "";
       }
+      this.guardarRutasTemporales();
     },
     esRojo(horario) {
       return horario.tipoUnidad === Constantes.TIPO_ROJO;
@@ -245,6 +259,9 @@ export default {
       }, 1000);
     },
     refrescarTiempoTranscurrido() {
+      // Para parpadear
+      this.colorRutaTemporal = this.colorRutaTemporal===COLOR_NARANJA ? COLOR_MORADO:COLOR_NARANJA;
+      // Para parpadear
       const fechaActualComoCadena = Utiles.formatearFechaActual();
       const fechaActual = new Date();
       for (const ruta of this.rutas) {

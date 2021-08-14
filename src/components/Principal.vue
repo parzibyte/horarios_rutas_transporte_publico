@@ -8,6 +8,11 @@
       icons-and-text
     >
       <v-tabs-slider color="yellow"></v-tabs-slider>
+
+      <v-tab>
+        Bajada
+        <v-icon>mdi-arrow-down-bold</v-icon>
+      </v-tab>
       <v-tab>
         Rojos
         <v-icon>mdi-bus-clock</v-icon>
@@ -42,6 +47,10 @@
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
+
+      <v-tab-item>
+        <Bajada></Bajada>
+      </v-tab-item>
       <v-tab-item>
         <Rojos></Rojos>
       </v-tab-item>
@@ -79,6 +88,7 @@ import RutaFija from "@/components/RutaFija";
 import AcercaDe from "@/components/AcercaDe";
 import Comisiones from "@/components/Comisiones";
 import Rojos from "@/components/Rojos";
+import Bajada from "@/components/Bajada";
 
 export default {
   name: "HelloWorld",
@@ -91,9 +101,10 @@ export default {
     ReportePorUnidad,
     RutaFija,
     Rojos,
+    Bajada,
   },
   data: () => ({
-    tab: 1,
+    tab: 2,
   }),
   methods: {
     actualizarReporte() {

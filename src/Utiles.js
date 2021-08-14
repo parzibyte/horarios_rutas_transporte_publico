@@ -21,7 +21,6 @@ const Utiles = {
         const horaFormateada = `${this.agregarCeroSiEsNecesario(fecha.getHours())}_${this.agregarCeroSiEsNecesario(fecha.getMinutes())}_${this.agregarCeroSiEsNecesario(fecha.getSeconds())}`;
         return fechaFormateada + "_" + horaFormateada;
     },
-
     formatearHoraActual() {
         const fecha = new Date();
         return `${this.agregarCeroSiEsNecesario(fecha.getHours())}:${this.agregarCeroSiEsNecesario(fecha.getMinutes())}:${this.agregarCeroSiEsNecesario(fecha.getSeconds())}`;

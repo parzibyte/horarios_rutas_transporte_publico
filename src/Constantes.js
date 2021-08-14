@@ -8,6 +8,7 @@ const Constantes = {
     PREFIJO_RUTAS: "rutas",
     PREFIJO_HORARIOS: "horarios",
     PREFIJO_COMISIONES: "comisiones",
+    PREFIJO_UNIDADES_BAJADA: "unidades_bajada",
     NUMEROS_PARA_COMISION: [
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,

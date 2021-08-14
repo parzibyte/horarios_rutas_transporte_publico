@@ -1,32 +1,24 @@
 <template>
-  <v-dialog
-      v-model="mostrar"
-      persistent
-      max-width="350"
-  >
+  <v-dialog v-model="mostrar" persistent max-width="350">
     <v-card class="pt-2">
       <v-container>
         <v-text-field
-            ref="campoNumero"
-            v-model="numeroUnidad"
-            label="Número"
-            type="number"
+          ref="campoNumero"
+          v-model="numeroUnidad"
+          label="Número"
+          type="number"
         ></v-text-field>
       </v-container>
-      <v-alert
-          class="mx-2 my-2"
-          dense
-          type="success"
-      >
-        <strong class="text-h4">{{ ruta.nombre }} | {{numeroUnidad}}</strong>
+      <v-alert class="mx-2 my-2" dense type="success">
+        <strong class="text-h4">{{ ruta.nombre }} | {{ numeroUnidad }}</strong>
       </v-alert>
 
       <div v-show="!tomarHoraActual">
         <v-time-picker
-            full-width
-            format="ampm"
-            v-model="horario"
-            use-seconds
+          full-width
+          format="ampm"
+          v-model="horario"
+          use-seconds
         ></v-time-picker>
         <div v-show="!horario">
           <p>Por favor selecciona el horario</p>
@@ -38,30 +30,9 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-            dark
-            color="red"
-            large
-            @click="guardarMicro()"
-        >
-          Rojo
-        </v-btn>
-        <v-btn
-            @click="cerrar"
-            large
-            text
-        >
-          Cancelar
-        </v-btn>
-        <v-btn
-            color="blue "
-            large
-            dark
-            @click="guardarCombi()"
-        >
-          R-3
-        </v-btn>
-
+        <v-btn dark color="red" large @click="guardarMicro()"> Rojo </v-btn>
+        <v-btn @click="cerrar" large text> Cancelar </v-btn>
+        <v-btn color="blue " large dark @click="guardarCombi()"> R-3 </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -127,16 +98,25 @@ export default {
       if (!this.tomarHoraActual && !this.horario) {
         return;
       }
+      if (!this.numeroUnidad) {
+        return;
+      }
       let verdaderoHorario = "";
       if (this.tomarHoraActual) {
         verdaderoHorario = Utiles.formatearHoraActual();
       } else {
         verdaderoHorario = this.horario;
       }
-      await HorariosService.nuevo(this.ruta._id, Utiles.formatearFechaActual(), verdaderoHorario, this.tipoUnidad, this.numeroUnidad);
+      await HorariosService.nuevo(
+        this.ruta._id,
+        Utiles.formatearFechaActual(),
+        verdaderoHorario,
+        this.tipoUnidad,
+        this.numeroUnidad
+      );
       this.antesDeCerrar();
       this.$emit("guardado");
-    }
-  }
-}
+    },
+  },
+};
 </script>

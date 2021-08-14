@@ -66,7 +66,7 @@ export default {
   mounted() {
     this.obtenerRutas();
     this.obtenerReporte();
-    this.tipoUnidad = this.unidades[0];
+    this.tipoUnidad = this.unidades[1];
   },
   methods: {
     obtenerNombreRutaSegunId(id) {

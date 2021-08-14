@@ -17,7 +17,11 @@
       <v-icon>mdi-plus</v-icon>
     </v-btn>
     <div v-for="(unidad, i) in unidades" :key="i">
-      <v-list-item two-line @click="eliminarUnidad(i, unidad)">
+      <v-list-item
+        two-line
+        @click="eliminarUnidad(i, unidad)"
+        style="background-color: orange"
+      >
         <v-list-item-content>
           <v-list-item-title>
             <v-row>

@@ -15,7 +15,9 @@
             :key="i"
           >
             <v-list-item
-              :style="{ backgroundColor: ruta.marcada ? colorRutaTemporal : 'white' }"
+              :style="{
+                backgroundColor: ruta.marcada ? colorRutaTemporal : 'white',
+              }"
               two-line
             >
               <v-list-item-content>
@@ -187,6 +189,11 @@ export default {
         sufijo: "",
       },
       {
+        nombre: "TALB",
+        marcada: false,
+        sufijo: "",
+      },
+      {
         nombre: "TEZO",
         marcada: false,
         sufijo: "",
@@ -260,7 +267,8 @@ export default {
     },
     refrescarTiempoTranscurrido() {
       // Para parpadear
-      this.colorRutaTemporal = this.colorRutaTemporal===COLOR_NARANJA ? COLOR_MORADO:COLOR_NARANJA;
+      this.colorRutaTemporal =
+        this.colorRutaTemporal === COLOR_NARANJA ? COLOR_MORADO : COLOR_NARANJA;
       // Para parpadear
       const fechaActualComoCadena = Utiles.formatearFechaActual();
       const fechaActual = new Date();

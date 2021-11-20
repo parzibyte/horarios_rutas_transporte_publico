@@ -8,11 +8,6 @@
       icons-and-text
     >
       <v-tabs-slider color="yellow"></v-tabs-slider>
-
-      <v-tab>
-        Bajada
-        <v-icon>mdi-arrow-down-bold</v-icon>
-      </v-tab>
       <v-tab>
         Rojos
         <v-icon>mdi-bus-clock</v-icon>
@@ -30,15 +25,7 @@
         <v-icon>mdi-bus-clock</v-icon>
       </v-tab>
       <v-tab>
-        Comisiones
-        <v-icon>mdi-currency-usd</v-icon>
-      </v-tab>
-      <v-tab>
         Rutas
-        <v-icon>mdi-bus</v-icon>
-      </v-tab>
-      <v-tab>
-        fija
         <v-icon>mdi-bus</v-icon>
       </v-tab>
       <v-tab>
@@ -48,9 +35,7 @@
     </v-tabs>
     <v-tabs-items v-model="tab">
 
-      <v-tab-item>
-        <Bajada></Bajada>
-      </v-tab-item>
+      
       <v-tab-item>
         <Rojos></Rojos>
       </v-tab-item>
@@ -64,13 +49,7 @@
         <ReportePorUnidad></ReportePorUnidad>
       </v-tab-item>
       <v-tab-item>
-        <Comisiones></Comisiones>
-      </v-tab-item>
-      <v-tab-item>
         <Rutas @actualizadas="actualizarRutasEnHorarios"></Rutas>
-      </v-tab-item>
-      <v-tab-item>
-        <RutaFija></RutaFija>
       </v-tab-item>
       <v-tab-item>
         <AcercaDe></AcercaDe>
@@ -84,24 +63,18 @@ import Rutas from "@/components/Rutas";
 import Horarios from "@/components/Horarios";
 import Reportes from "@/components/Reportes";
 import ReportePorUnidad from "@/components/ReportePorUnidad";
-import RutaFija from "@/components/RutaFija";
 import AcercaDe from "@/components/AcercaDe";
-import Comisiones from "@/components/Comisiones";
 import Rojos from "@/components/Rojos";
-import Bajada from "@/components/Bajada";
 
 export default {
   name: "HelloWorld",
   components: {
-    Comisiones,
     AcercaDe,
     Reportes,
     Horarios,
     Rutas,
     ReportePorUnidad,
-    RutaFija,
     Rojos,
-    Bajada,
   },
   data: () => ({
     tab: 2,

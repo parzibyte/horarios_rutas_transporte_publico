@@ -30,7 +30,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn dark color="red" large @click="guardarMicro()"> Rojo </v-btn>
+        <v-btn v-show="deberiaMostrarBotonMicro()" dark color="red" large @click="guardarMicro()"> Rojo </v-btn>
         <v-btn @click="cerrar" large text> Cancelar </v-btn>
         <v-btn color="blue " large dark @click="guardarCombi()"> R-3 </v-btn>
       </v-card-actions>
@@ -75,6 +75,16 @@ export default {
     },
   },
   methods: {
+    deberiaMostrarBotonMicro(){
+      if(!this.ruta.nombre){
+        return true;
+      }
+      const rutas = ["talzintan","tezotepec","calicapan","sosa","san isidro", "tacopan"];
+      if(rutas.indexOf(this.ruta.nombre.toLowerCase()) === -1){
+          return false;
+      }
+      return true;
+    },
     guardarCombi() {
       this.tipoUnidad = Constantes.TIPO_COMBI;
       this.guardar();

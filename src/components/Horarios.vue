@@ -108,7 +108,7 @@
                           <p>
                             Se llevó
                             <strong>{{
-                              horarioReal.transcurrido | milisegundosCortos
+                              horarioReal.transcurrido | milisegundosConHoras
                             }}</strong>
                             de
                             <span

@@ -77,7 +77,7 @@ export default {
     Rojos,
   },
   data: () => ({
-    tab: 2,
+    tab: 1,
   }),
   methods: {
     actualizarReporte() {

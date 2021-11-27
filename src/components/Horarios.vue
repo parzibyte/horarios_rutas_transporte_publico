@@ -40,12 +40,42 @@
             >
               <v-list-item-content style="padding: 0; margin: 0">
                 <v-list-item-title>
-                  <h5
-                    class="text-h4"
-                    style="text-align: right; margin-bottom: 10px"
-                  >
-                    {{ ruta.nombre }}
-                  </h5>
+                  <p style="text-align: right; margin-bottom: 10px">
+                    <v-btn
+                      style="
+                        padding: 0;
+                        margin: 0;
+                        min-width: 0px;
+                        height: 16px;
+                      "
+                      color="error"
+                      depressed
+                      >{{ (ruta.informacionMicros[0] || {}).numero }}</v-btn
+                    >
+
+                    {{ (ruta.informacionMicros[0] || {}).hora }}
+                    <strong>
+                      {{
+                        diferenciaEntreMicros(ruta.informacionMicros)
+                          | milisegundosCortos
+                      }}
+                    </strong>
+
+                    <v-btn
+                      style="
+                        padding: 0;
+                        margin: 0;
+                        min-width: 0px;
+                        height: 16px;
+                      "
+                      color="error"
+                      depressed
+                      >{{ (ruta.informacionMicros[1] || {}).numero }}</v-btn
+                    >
+                    <strong>
+                      {{ ruta.nombre }}
+                    </strong>
+                  </p>
                   <div v-if="ruta.horarios">
                     <v-row
                       v-for="(horarioReal, clave) in ruta.horarios"
@@ -218,6 +248,7 @@ export default {
     rutaSeleccionada: {},
     idInterval: null,
     pausado: false,
+    horariosRojos: [],
   }),
   async mounted() {
     if (!localStorage.getItem(CLAVE_LOCALSTORAGE)) {
@@ -228,6 +259,16 @@ export default {
     this.iniciarIntervalRefrescarTiempo();
   },
   methods: {
+    diferenciaEntreMicros(informacionMicros) {
+      if (informacionMicros.length < 2) {
+        return 0;
+      }
+      const primeraRuta = informacionMicros[0];
+      const segundaRuta = informacionMicros[1];
+      const primeraFecha = new Date(primeraRuta.fecha + "T" + primeraRuta.hora);
+      const segundaFecha = new Date(segundaRuta.fecha + "T" + segundaRuta.hora);
+      return primeraFecha - segundaFecha;
+    },
     guardarRutasTemporales() {
       localStorage.setItem(
         CLAVE_LOCALSTORAGE,
@@ -342,7 +383,25 @@ export default {
       }
       this.rutas[indice].horarios = horarios;
     },
+    obtenerUltimosRojos(idRuta) {
+      const ultimos = [];
+      let contadorEncontrados = 0;
+      for (let i = this.horariosRojos.length - 1; i >= 0; i--) {
+        const rojo = this.horariosRojos[i];
+        if (rojo.idRuta === idRuta) {
+          ultimos.push(rojo);
+          contadorEncontrados++;
+        }
+        if (contadorEncontrados >= 2) {
+          return ultimos;
+        }
+      }
+      return ultimos;
+    },
     async obtenerRutas() {
+      this.horariosRojos = await HorariosService.obtenerPorTipoUnidad(
+        Constantes.TIPO_ROJO
+      );
       const fechaActual = Utiles.formatearFechaActual();
       const rutas = await RutasService.obtener();
       for (const ruta of rutas) {
@@ -354,6 +413,7 @@ export default {
           horario.transcurrido = 0;
         }
         ruta.horarios = horarios;
+        ruta.informacionMicros = this.obtenerUltimosRojos(ruta._id);
         ruta.transcurrido = 0;
         ruta.marcada = false;
       }

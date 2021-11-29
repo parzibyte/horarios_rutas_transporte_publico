@@ -366,6 +366,7 @@ export default {
       this.dialogoRegistrarHorario = false;
       // this.$emit("actualizados");
       this.colocarHorarioARuta(this.ultimoIndice);
+      await this.colocarInformacionMicros();
     },
     registrarHorario(ruta, indice) {
       this.ultimoIndice = indice;
@@ -398,10 +399,15 @@ export default {
       }
       return ultimos;
     },
-    async obtenerRutas() {
+    async colocarInformacionMicros() {
       this.horariosRojos = await HorariosService.obtenerPorTipoUnidad(
         Constantes.TIPO_ROJO
       );
+      for (const ruta of this.rutas) {
+        ruta.informacionMicros = this.obtenerUltimosRojos(ruta._id);
+      }
+    },
+    async obtenerRutas() {
       const fechaActual = Utiles.formatearFechaActual();
       const rutas = await RutasService.obtener();
       for (const ruta of rutas) {
@@ -418,6 +424,7 @@ export default {
         ruta.marcada = false;
       }
       this.rutas = rutas;
+      await this.colocarInformacionMicros();
     },
   },
 };

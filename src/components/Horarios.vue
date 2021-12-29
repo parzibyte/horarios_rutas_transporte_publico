@@ -29,6 +29,16 @@
             <v-divider></v-divider>
           </div>
         </div>
+        <v-btn
+          v-for="(horario, indice) in horariosRojosParteInferior"
+          :key="indice"
+          style="border: 1px solid white !important; display: block"
+          :style="{ backgroundColor: horario.colorRuta }"
+          class="white--text"
+          depressed
+        >
+          {{ horario.numero }}
+        </v-btn>
       </v-col>
       <v-col :cols="mostrarNotas ? 10 : 12">
         <div v-if="rutas.length > 0">
@@ -192,6 +202,8 @@ import Constantes from "@/Constantes";
 const CLAVE_LOCALSTORAGE = "rutas_temporales";
 const COLOR_NARANJA = "#C6FF00";
 const COLOR_MORADO = "#FF1744";
+
+let diccionario = {};
 export default {
   name: "Horarios",
   components: { TipoTransporte, DialogoAgregarHorario },
@@ -249,6 +261,7 @@ export default {
     idInterval: null,
     pausado: false,
     horariosRojos: [],
+    horariosRojosParteInferior: [],
   }),
   async mounted() {
     if (!localStorage.getItem(CLAVE_LOCALSTORAGE)) {
@@ -256,9 +269,44 @@ export default {
     }
     this.rutasTemporales = JSON.parse(localStorage.getItem(CLAVE_LOCALSTORAGE));
     await this.obtenerRutas();
+    await this.obtenerReporteDeRojos();
     this.iniciarIntervalRefrescarTiempo();
   },
   methods: {
+    obtenerRutaSegunId(id) {
+      return diccionario[id];
+    },
+    async obtenerReporteDeRojos() {
+      const horarios = await HorariosService.obtenerPorTipoUnidad(
+        Constantes.TIPO_ROJO
+      );
+      horarios.reverse();
+      horarios.forEach((horario) => {
+        const ruta = this.obtenerRutaSegunId(horario.idRuta);
+        horario.nombreRuta = ruta.nombre;
+        horario.colorRuta = ruta.color;
+      });
+      for (let i = horarios.length - 2; i >= 0; i--) {
+        const tiempoA = horarios[i].hora;
+        const tiempoB = horarios[i + 1].hora;
+        let diferenciaGeneral = Utiles.restarHorarios(tiempoA, tiempoB);
+        horarios[i].tiempoGeneral = diferenciaGeneral;
+      }
+      const diccionarioHoras = {};
+      for (let i = horarios.length - 1; i >= 0; i--) {
+        const tiempoA = horarios[i].hora;
+        const nombreRuta = horarios[i].nombreRuta;
+        horarios[i].tiempoMismaRuta = 0;
+        if (diccionarioHoras[nombreRuta]) {
+          horarios[i].tiempoMismaRuta = Utiles.restarHorarios(
+            tiempoA,
+            diccionarioHoras[nombreRuta]
+          );
+        }
+        diccionarioHoras[nombreRuta] = tiempoA;
+      }
+      this.horariosRojosParteInferior = horarios.slice(0, 8);
+    },
     diferenciaEntreMicros(informacionMicros) {
       if (informacionMicros.length < 2) {
         return 0;
@@ -367,6 +415,7 @@ export default {
       // this.$emit("actualizados");
       this.colocarHorarioARuta(this.ultimoIndice);
       await this.colocarInformacionMicros();
+      this.obtenerReporteDeRojos();
     },
     registrarHorario(ruta, indice) {
       this.ultimoIndice = indice;
@@ -408,9 +457,11 @@ export default {
       }
     },
     async obtenerRutas() {
+      diccionario = {};
       const fechaActual = Utiles.formatearFechaActual();
       const rutas = await RutasService.obtener();
       for (const ruta of rutas) {
+        diccionario[ruta._id] = ruta;
         const horarios = await HorariosService.obtenerUltimoHorarioRegistrado(
           fechaActual,
           ruta._id

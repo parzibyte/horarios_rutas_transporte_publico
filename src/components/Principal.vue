@@ -9,16 +9,12 @@
     >
       <v-tabs-slider color="yellow"></v-tabs-slider>
       <v-tab>
-        Rojos
-        <v-icon>mdi-bus-clock</v-icon>
+        Reportes
+        <v-icon>mdi-file-table-box-multiple</v-icon>
       </v-tab>
       <v-tab>
         Horarios
         <v-icon>mdi-clipboard-clock</v-icon>
-      </v-tab>
-      <v-tab>
-        Reportes
-        <v-icon>mdi-file-table-box-multiple</v-icon>
       </v-tab>
       <v-tab>
         Unidades
@@ -34,16 +30,11 @@
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
-
-      
       <v-tab-item>
-        <Rojos></Rojos>
+        <Reportes ref="reportes"></Reportes>
       </v-tab-item>
       <v-tab-item>
         <Horarios ref="horarios"></Horarios>
-      </v-tab-item>
-      <v-tab-item>
-        <Reportes ref="reportes"></Reportes>
       </v-tab-item>
       <v-tab-item>
         <ReportePorUnidad></ReportePorUnidad>
@@ -64,7 +55,6 @@ import Horarios from "@/components/Horarios";
 import Reportes from "@/components/Reportes";
 import ReportePorUnidad from "@/components/ReportePorUnidad";
 import AcercaDe from "@/components/AcercaDe";
-import Rojos from "@/components/Rojos";
 
 export default {
   name: "HelloWorld",
@@ -74,7 +64,6 @@ export default {
     Horarios,
     Rutas,
     ReportePorUnidad,
-    Rojos,
   },
   data: () => ({
     tab: 1,

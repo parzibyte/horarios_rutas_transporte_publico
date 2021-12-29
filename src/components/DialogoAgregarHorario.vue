@@ -12,11 +12,15 @@
       <v-alert class="mx-2 my-2" dense type="success">
         <strong class="text-h4">{{ ruta.nombre }} | {{ numeroUnidad }}</strong>
       </v-alert>
+      <v-switch
+        v-model="tomarHoraActual"
+        :label="`Tomar hora actual`"
+      ></v-switch>
 
       <div v-show="!tomarHoraActual">
         <v-time-picker
-          full-width
           format="ampm"
+          full-width
           v-model="horario"
           use-seconds
         ></v-time-picker>
@@ -30,7 +34,15 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn v-show="deberiaMostrarBotonMicro()" dark color="red" large @click="guardarMicro()"> Rojo </v-btn>
+        <v-btn
+          v-show="deberiaMostrarBotonMicro()"
+          dark
+          color="red"
+          large
+          @click="guardarMicro()"
+        >
+          Rojo
+        </v-btn>
         <v-btn @click="cerrar" large text> Cancelar </v-btn>
         <v-btn color="blue " large dark @click="guardarCombi()"> R-3 </v-btn>
       </v-card-actions>
@@ -42,7 +54,7 @@
 import Utiles from "@/Utiles";
 import HorariosService from "@/HorariosService";
 import Constantes from "@/Constantes";
-
+const formateador = new Intl.DateTimeFormat("es-MX", { timeStyle: "medium" });
 export default {
   props: ["mostrar", "ruta"],
   name: "DialogoAgregarHorario",
@@ -68,6 +80,7 @@ export default {
   watch: {
     mostrar() {
       if (this.mostrar) {
+        this.horario = formateador.format(new Date());
         setTimeout(() => {
           this.$refs.campoNumero.$refs.input.focus();
         }, 50);
@@ -75,13 +88,20 @@ export default {
     },
   },
   methods: {
-    deberiaMostrarBotonMicro(){
-      if(!this.ruta.nombre){
+    deberiaMostrarBotonMicro() {
+      if (!this.ruta.nombre) {
         return true;
       }
-      const rutas = ["talzintan","tezotepec","calicapan","sosa","san isidro", "tacopan"];
-      if(rutas.indexOf(this.ruta.nombre.toLowerCase()) === -1){
-          return false;
+      const rutas = [
+        "talzintan",
+        "tezotepec",
+        "calicapan",
+        "sosa",
+        "san isidro",
+        "tacopan",
+      ];
+      if (rutas.indexOf(this.ruta.nombre.toLowerCase()) === -1) {
+        return false;
       }
       return true;
     },
@@ -96,6 +116,7 @@ export default {
     antesDeCerrar() {
       this.tipoUnidad = this.tipos[0];
       this.numeroUnidad = "";
+      this.tomarHoraActual = true;
     },
     refrescarHora() {
       this.horaRefrescada = Utiles.formatearHoraActual();

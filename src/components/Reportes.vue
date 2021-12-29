@@ -67,6 +67,17 @@
         No hay horarios para la fecha y ruta seleccionados
       </v-alert>
     </div>
+    <v-btn
+      color="primary"
+      fab
+      elevation="2"
+      right
+      bottom
+      fixed
+      @click="generarPdf()"
+    >
+      <v-icon>mdi-file-pdf</v-icon>
+    </v-btn>
   </v-card>
 </template>
 
@@ -76,7 +87,11 @@ import Utiles from "@/Utiles";
 import HorariosService from "@/HorariosService";
 import TipoTransporte from "@/components/TipoTransporte";
 import Constantes from "@/Constantes";
-
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+const formateador = new Intl.DateTimeFormat("es-MX", {
+  dateStyle: "short",
+  //timeStyle: "medium",
+});
 export default {
   name: "Reportes",
   components: { TipoTransporte },
@@ -95,6 +110,7 @@ export default {
     minutosSuma: null,
   }),
   async mounted() {
+    //this.createPdf();
     await this.obtenerRutas();
     this.fechaSeleccionada = Utiles.formatearFechaActual();
     // await this.refrescarTodo();
@@ -112,6 +128,150 @@ export default {
     },
   },
   methods: {
+    async generarPdf() {
+      const fecha = formateador.format(new Date());
+      const pdfDoc = await PDFDocument.create();
+      const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+
+      let page = pdfDoc.addPage();
+      const colorNegro = rgb(0, 0, 0);
+      const linea =
+        "______________________________________________________________";
+      const parrafos = [
+        {
+          texto:
+            "Reporte de ruta " + this.nombreDeRutaPorId(this.rutaSeleccionada),
+          tamaño: 20,
+          color: colorNegro,
+        },
+        {
+          texto: "Fecha: " + fecha,
+          tamaño: 20,
+          color: colorNegro,
+        },
+      ];
+      let y = page.getHeight() - parrafos[0].tamaño;
+      for (const parrafo of parrafos) {
+        page.drawText(parrafo.texto, {
+          x: 20,
+          y: y,
+          size: parrafo.tamaño,
+          font: timesRomanFont,
+          color: parrafo.color,
+        });
+        y -= parrafo.tamaño;
+        if (y - parrafo.tamaño <= 0) {
+          page = pdfDoc.addPage();
+          y = page.getHeight() - parrafo.tamaño;
+        }
+      }
+      const inicioUnidad = 20,
+        inicioHora = 150,
+        inicioTiempoGeneral = 250,
+        inicioTiempoMismaUnidad = 350;
+      const tamañoFuenteTiempos = 15;
+      page.drawText("Unidad", {
+        x: inicioUnidad,
+        y: y,
+        size: tamañoFuenteTiempos,
+        font: timesRomanFont,
+        color: colorNegro,
+      });
+      page.drawText("Hora", {
+        x: inicioHora,
+        y: y,
+        size: tamañoFuenteTiempos,
+        font: timesRomanFont,
+        color: colorNegro,
+      });
+      page.drawText("Tiempo gral.", {
+        x: inicioTiempoGeneral,
+        y: y,
+        size: tamañoFuenteTiempos,
+        font: timesRomanFont,
+        color: colorNegro,
+      });
+      page.drawText("Tiempo misma unidad", {
+        x: inicioTiempoMismaUnidad,
+        y: y,
+        size: tamañoFuenteTiempos,
+        font: timesRomanFont,
+        color: colorNegro,
+      });
+      y -= 1;
+      page.drawText(linea, {
+        x: inicioUnidad,
+        y: y,
+        size: tamañoFuenteTiempos,
+        font: timesRomanFont,
+        color: colorNegro,
+      });
+      y -= tamañoFuenteTiempos + 10;
+
+      let contador = 0;
+      for (const horario of this.horarios) {
+        contador += 1;
+        page.drawText(
+          "" + contador + ". " + horario.tipoUnidad + " " + horario.numero,
+          {
+            x: inicioUnidad,
+            y: y,
+            size: tamañoFuenteTiempos,
+            font: timesRomanFont,
+            color: colorNegro,
+          }
+        );
+        page.drawText(horario.hora, {
+          x: inicioHora,
+          y: y,
+          size: tamañoFuenteTiempos,
+          font: timesRomanFont,
+          color: colorNegro,
+        });
+
+        page.drawText(Utiles.milisegundosCortos(horario.tiempoGeneral), {
+          x: inicioTiempoGeneral,
+          y: y,
+          size: tamañoFuenteTiempos,
+          font: timesRomanFont,
+          color: colorNegro,
+        });
+        page.drawText(Utiles.milisegundosCortos(horario.tiempoMismoTipo), {
+          x: inicioTiempoMismaUnidad,
+          y: y,
+          size: tamañoFuenteTiempos,
+          font: timesRomanFont,
+          color: colorNegro,
+        });
+        y -= 1;
+        page.drawText(linea, {
+          x: inicioUnidad,
+          y: y,
+          size: tamañoFuenteTiempos,
+          font: timesRomanFont,
+          color: colorNegro,
+        });
+        y -= tamañoFuenteTiempos + 10;
+        if (y - tamañoFuenteTiempos <= 0) {
+          page = pdfDoc.addPage();
+          y = page.getHeight() - tamañoFuenteTiempos;
+        }
+      }
+
+      const pdfBytes = await pdfDoc.save();
+      const blob = new Blob([pdfBytes], {
+        type: "application/pdf",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download =
+        this.nombreDeRutaPorId(this.rutaSeleccionada) + "_" + fecha + ".pdf";
+      document.body.appendChild(a);
+      a.style.display = "none";
+      a.click();
+      a.remove();
+    },
     sumarConTiempoSeleccionado(hora) {
       return Utiles.sumarHorarios(hora, this.minutosSuma);
     },
@@ -124,6 +284,13 @@ export default {
     },
     async obtenerRutas() {
       this.rutas = await RutasService.obtener();
+    },
+    nombreDeRutaPorId(id) {
+      for (const ruta of this.rutas) {
+        if (ruta._id == id) {
+          return ruta.nombre;
+        }
+      }
     },
     async obtenerHorariosConFechaYRutaSeleccionada() {
       if (!this.fechaSeleccionada || !this.rutaSeleccionada) {

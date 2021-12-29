@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import Toasted from 'vue-toasted';
+import Utiles from './Utiles';
 const formateador = new Intl.DateTimeFormat('es-MX', {  timeStyle: 'medium' });
 Vue.use(Toasted);
 Vue.config.productionTip = false
@@ -29,14 +30,7 @@ Vue.filter("milisegundosALegible", milisegundos => {
     return respuesta;
 });
 
-Vue.filter("milisegundosCortos", milisegundos => {
-    if (!milisegundos) {
-        return "-";
-    }
-    const transcurrido = new Date(milisegundos).toISOString().substr(14, 5);
-    return transcurrido;
-
-});
+Vue.filter("milisegundosCortos", Utiles.milisegundosCortos);
 Vue.filter("milisegundosConHoras", milisegundos => {
     if (!milisegundos) {
         return "-";

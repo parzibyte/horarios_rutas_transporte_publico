@@ -1,4 +1,11 @@
 const Utiles = {
+    milisegundosCortos(milisegundos) {
+        if (!milisegundos) {
+            return "-";
+        }
+        const transcurrido = new Date(milisegundos).toISOString().substr(14, 5);
+        return transcurrido;
+    },
     sumarHorarios(hora, minutos) {
         const fecha = this.formatearFechaActual();
         const fechaYHoraA = new Date(fecha + "T" + hora);

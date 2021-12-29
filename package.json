@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "pdf-lib": "^1.17.1",
     "pouchdb": "^7.2.2",
     "pouchdb-find": "^7.2.2",
     "typeface-roboto": "^1.1.13",
